@@ -2,11 +2,13 @@
 
 {
   "files": [],
-   "include": ["src", "src/svg.d.ts"],
+   "include": ["src", "src/svg.d.ts","src/html2pdf.js.d.ts"],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-  
+  "compilerOptions": {
+    "noImplicitAny": false,
+  }
 }
 

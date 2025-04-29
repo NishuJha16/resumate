@@ -188,7 +188,9 @@ const ExperienceForm = () => {
                 <Controller
                   name={`${base}.description`}
                   control={control}
-                  render={({ field }) => <Editor {...field} />}
+                  render={({ field }) => (
+                    <Editor {...field} style={{ fontSize: 12 }} />
+                  )}
                 />
               </Grid>
 

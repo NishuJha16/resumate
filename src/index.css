@@ -80,3 +80,7 @@ link{
 .page-break {
   break-after: page;
 }
+ol, ul, menu {
+  list-style: auto !important;
+  padding-left: 15px !important;
+}
