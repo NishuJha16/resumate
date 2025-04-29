@@ -2,13 +2,18 @@
 
 {
   "files": [],
-   "include": ["src", "src/svg.d.ts","src/html2pdf.js.d.ts"],
+   "include": [ "src/svg.d.ts","src/html2pdf.js.d.ts"],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
     "noImplicitAny": false,
+     "lib": [
+      "dom",
+      "es2015",
+      "es2015.iterable"
+    ]
   }
 }
 
