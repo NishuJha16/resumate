@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/header/header";
-import ResumeForm from "./components/resume-form/resume-form";
 import { ThemeProvider } from "@mui/material";
 import { darkTheme, lightTheme } from "./theme";
 import { pdfjs } from "react-pdf";
+import { Outlet } from "react-router";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -36,7 +36,7 @@ function App() {
       <div className="min-h-screen h-full flex flex-col  bg-[#F2F3F7] text-black dark:bg-gray-900 dark:text-white transition-colors">
         <Header />
         <div className="pt-[56px] flex gap-2 h-full">
-          <ResumeForm />
+          <Outlet />
         </div>
       </div>
     </ThemeProvider>

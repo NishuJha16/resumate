@@ -21,7 +21,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={() => setIsDark(!isDark)}
-      className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-black dark:text-white cursor-pointer transition-colors duration-300 ease-in-out"
+      className="px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 text-black dark:text-white cursor-pointer transition-colors duration-300 ease-in-out"
     >
       {isDark ? <DarkModeOutlined /> : <LightModeOutlined />}
     </button>

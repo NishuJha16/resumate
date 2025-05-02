@@ -12,6 +12,8 @@ import {
   TextField,
   Typography,
   Chip,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
 import get from "lodash.get";
@@ -93,6 +95,21 @@ const ExperienceForm = () => {
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <Controller
+                  name={`${base}.role`}
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Role"
+                      fullWidth
+                      error={!!get(errors, `${base}.role`)}
+                      helperText={(get(errors, `${base}.role`) as any)?.message}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Controller
                   name={`${base}.company`}
                   control={control}
                   render={({ field }) => (
@@ -104,22 +121,6 @@ const ExperienceForm = () => {
                       helperText={
                         (get(errors, `${base}.company`) as any)?.message
                       }
-                    />
-                  )}
-                />
-              </Grid>
-
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Controller
-                  name={`${base}.role`}
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Role"
-                      fullWidth
-                      error={!!get(errors, `${base}.role`)}
-                      helperText={(get(errors, `${base}.role`) as any)?.message}
                     />
                   )}
                 />
@@ -172,13 +173,30 @@ const ExperienceForm = () => {
                       {...field}
                       label="End Date"
                       type="month"
-                      fullWidth
                       InputLabelProps={{ shrink: true }}
+                      fullWidth
                       error={!!get(errors, `${base}.endDate`)}
                       helperText={
                         (get(errors, `${base}.endDate`) as any)?.message
                       }
                     />
+                  )}
+                />
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <Controller
+                  name={`${base}.isPresent`}
+                  control={control}
+                  render={({ field }) => (
+                    <FormControlLabel
+                      sx={{
+                        ".MuiTypography-root": {
+                          fontSize: 12,
+                        },
+                      }}
+                      label="I presently work here"
+                      control={<Checkbox {...field} />}
+                    ></FormControlLabel>
                   )}
                 />
               </Grid>

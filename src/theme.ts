@@ -25,7 +25,7 @@ const darkPalette = {
   mode: "dark" as PaletteMode,
   background: {
     default: "#121212",
-    paper: "#1e1e1e",
+    paper: "rgb(24,124,120,0.2)",
   },
   text: {
     primary: "#ffffff",

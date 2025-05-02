@@ -18,7 +18,7 @@ export const resumeThemes = {
     divider: "#90caf9",
   },
   dark: {
-    background: "#1e1e1e",
+    background: "rgb(24,124,120,0.2)",
     text: "#e0e0e0",
     heading: "#90caf9",
     divider: "#333",

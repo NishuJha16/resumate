@@ -29,7 +29,7 @@ const PersonalInfoPreview = ({ personal }: { personal: any }) => {
         <span>|</span>
         <span>{personal?.place || getPlaceHolder("Place, country")}</span>
 
-        {personal.github && (
+        {personal?.github && (
           <>
             <span>|</span>
             <a href={personal.github} target="_blank" rel="noreferrer">
@@ -37,7 +37,7 @@ const PersonalInfoPreview = ({ personal }: { personal: any }) => {
             </a>
           </>
         )}
-        {personal.linkedin && (
+        {personal?.linkedin && (
           <>
             <span>|</span>
             <a href={personal.linkedin} target="_blank" rel="noreferrer">
@@ -45,7 +45,7 @@ const PersonalInfoPreview = ({ personal }: { personal: any }) => {
             </a>
           </>
         )}
-        {personal.otherUrl && (
+        {personal?.otherUrl && (
           <>
             <span>|</span>
             <a href={personal.otherUrl} target="_blank" rel="noreferrer">
@@ -67,10 +67,16 @@ const SkillsPreview = ({ skills }: any) => {
   return (
     skillList.length > 0 && (
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold border-b">Skills</h2>
-        <ul className="list-disc list-inside grid grid-cols-2 gap-x-8">
+        <h2 className="text-lg font-semibold border-b uppercase">Skills</h2>
+        <ul className="list-disc list-inside flex flex-wrap gap-2 !p-0">
           {skillList.map((skill: string, i: number) => (
-            <li key={i}>{skill}</li>
+            <li
+              key={i}
+              className="list-none nowrap py-[0.5] px-2 rounded-sm"
+              style={{ background: "rgba(55, 84, 109, 0.2)" }}
+            >
+              {skill}
+            </li>
           ))}
         </ul>
       </div>
@@ -82,7 +88,9 @@ const SummaryPreview = ({ summary }: any) => {
   return (
     summary && (
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold border-b">Professional Summary</h2>
+        <h2 className="text-lg font-semibold border-b uppercase">
+          Professional Summary
+        </h2>
         <p className="text-xs">{summary}</p>
       </div>
     )
@@ -99,9 +107,9 @@ const EducationPreview = ({ education }: { education: any[] }) => {
 
   return (
     <div className="flex flex-col gap-1">
-      <h2 className="text-lg font-semibold border-b">Education</h2>
+      <h2 className="text-lg font-semibold border-b uppercase">Education</h2>
       {education.map((edu, i) => (
-        <div key={i} className="mt-2 space-y-1">
+        <div key={i} className="space-y-1">
           <div className="flex justify-between">
             <h3 className="font-semibold">
               {edu.degree}, <span className="font-normal">{edu.branch}</span>
@@ -124,22 +132,25 @@ const EducationPreview = ({ education }: { education: any[] }) => {
 const ExperiencePreview = ({ experience }: { experience: any[] }) => {
   if (
     !experience.length ||
-    !Object.values(experience[0]).some((value: any) => value.trim() !== "")
+    !Object.values(experience[0]).some((value: any) => value?.trim() !== "")
   )
     return null;
 
   return (
     <div className="flex flex-col gap-1">
-      <h2 className="text-lg font-semibold border-b">Experience</h2>
+      <h2 className="text-lg font-semibold border-b uppercase">Experience</h2>
       {experience.map((exp, i) => (
-        <div key={i} className="mt-2 space-y-1">
+        <div key={i} className="space-y-1">
           <div className="flex justify-between">
-            <h3 className="font-semibold">
-              {exp.role} — {exp.company}
-            </h3>
+            <div className="flex flex-col ">
+              <h3 className="font-semibold">
+                {exp.role} — {exp.company}
+              </h3>
+              {exp?.location && <p>{exp.location}</p>}
+            </div>
             <p className="italic text-sm">
-              {formatDate(exp.startDate)}–{formatDate(exp.endDate)},{" "}
-              {exp.location}
+              {formatDate(exp.startDate)}–
+              {exp.isPresent ? "Present" : formatDate(exp.endDate)}
             </p>
           </div>
           <p
@@ -165,9 +176,9 @@ const ProjectsPreview = ({ projects }: { projects: any[] }) => {
 
   return (
     <div className="flex flex-col gap-1">
-      <h2 className="text-lg font-semibold border-b">Projects</h2>
+      <h2 className="text-lg font-semibold border-b uppercase">Projects</h2>
       {projects.map((proj, i) => (
-        <div key={i} className="mt-2 space-y-1">
+        <div key={i} className="space-y-1">
           <h3 className="font-semibold">{proj.title}</h3>
           {proj.link && (
             <a href={proj.link} target="_blank" rel="noreferrer">
@@ -198,9 +209,11 @@ const CertificationsPreview = ({
 
   return (
     <div className="flex flex-col gap-1">
-      <h2 className="text-lg font-semibold border-b">Certifications</h2>
+      <h2 className="text-lg font-semibold border-b uppercase">
+        Certifications
+      </h2>
       {certifications.map((cert, i) => (
-        <div key={i} className="mt-2 space-y-1">
+        <div key={i} className="space-y-1">
           <h3 className="font-semibold">{cert.name}</h3>
           <p className="italic text-sm">
             {cert.issuer} — {formatDate(cert?.date)}

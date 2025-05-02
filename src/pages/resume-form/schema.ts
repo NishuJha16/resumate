@@ -31,7 +31,8 @@ export const resumeSchema = yup.object().shape({
       role: yup.string().required("Role is required"),
       location: yup.string().required("Location is required"),
       startDate: yup.string().required("Start date is required"),
-      endDate: yup.string().required("End date is required"),
+      endDate: yup.string(),
+      isPresent: yup.boolean(),
       description: yup.string().required("Description is required"),
       techUsed: yup.string().required("Technologies used is required"),
     })

@@ -3,7 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box } from "@mui/material";
 import { resumeSchema } from "./schema";
 import { useEffect, useState } from "react";
-import ResumeFormStepper from "../resume-stepper.tsx/resume-stepper";
+import ResumeFormStepper from "../../components/resume-stepper.tsx/resume-stepper";
 
 const defaultValues = {
   personal: {
@@ -35,6 +35,7 @@ const defaultValues = {
       startDate: "",
       endDate: "",
       techUsed: "",
+      isPresent: false,
     },
   ],
   skills: "",
@@ -59,10 +60,7 @@ const defaultValues = {
 const LOCAL_STORAGE_KEY = "resumeFormData";
 
 const ResumeForm = () => {
-  const [activeStep, setActiveStep] = useState(0);
-
-  const handleNext = () => setActiveStep((prev) => prev + 1);
-  const handleBack = () => setActiveStep((prev) => prev - 1);
+  const [activeStep, setActiveStep] = useState("personal");
 
   const methods = useForm({
     resolver: yupResolver(resumeSchema),
@@ -76,7 +74,6 @@ const ResumeForm = () => {
     console.log("📝 Resume Data:", data);
   };
 
-  // Load from localStorage on mount
   useEffect(() => {
     const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (savedData) {
@@ -84,7 +81,6 @@ const ResumeForm = () => {
     }
   }, [reset]);
 
-  // Watch for any changes and save to localStorage
   useEffect(() => {
     const subscription = watch((value) => {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value));
@@ -99,8 +95,7 @@ const ResumeForm = () => {
           <form onSubmit={methods.handleSubmit(onSubmit)} className="h-full">
             <ResumeFormStepper
               activeStep={activeStep}
-              handleBack={handleBack}
-              handleNext={handleNext}
+              updateStep={setActiveStep}
             />
           </form>
         </Box>

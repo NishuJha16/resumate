@@ -48,6 +48,9 @@ link{
     display: initial;
   }
 } 
+.public-DraftStyleDefault-ul {
+  margin: 0 !important;
+}
 
 /* A4 aspect ratio is 1:1.414 — 210mm x 297mm */
 .preview-container {
@@ -81,6 +84,9 @@ link{
   break-after: page;
 }
 ol, ul, menu {
-  list-style: auto !important;
-  padding-left: 15px !important;
+  list-style: unset !important;
+  padding-left: 8px !important;
+}
+.rsw-toolbar {
+  flex-wrap: wrap;
 }
