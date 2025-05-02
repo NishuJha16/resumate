@@ -24,7 +24,7 @@ const Header = () => {
         </NavLink>
         <div className="items-center justify-center gap-4 mr-2 dark:text-darkText-400 flex">
           <NavLink
-            to="/resume-builder"
+            to={String("/resumes-builder")}
             className={({ isActive }) =>
               isActive
                 ? "text-white bg-[rgb(245,124,6)] rounded-sm px-2 py-1"

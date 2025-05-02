@@ -33,7 +33,7 @@ const Home = () => {
               endIcon={<ArrowForward />}
               variant="contained"
               className="w-fit !text-white !capitalize"
-              onClick={() => navigate("/resume-builder")}
+              onClick={() => navigate("/resumes-builder")}
             >
               Build My Resume
             </Button>
