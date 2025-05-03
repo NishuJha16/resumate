@@ -11,7 +11,7 @@ import Footer from "./footer";
 const Home = () => {
   const navigate = useNavigate();
   return (
-    <div className="overflow-y-auto flex-1 no-scrollbar">
+    <div className="overflow-y-auto overflow-x-hidden flex-1 no-scrollbar">
       <Container className="flex flex-col gap-8 pb-8">
         <Container className="flex flex-col md:flex-row justify-between gap-2 ">
           <img src={Deco} className="absolute left-0 fade-in" />
