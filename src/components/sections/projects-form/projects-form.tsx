@@ -33,8 +33,6 @@ const ProjectsForm = () => {
     });
   };
 
-  console.log("ProjectsForm", fields);
-
   return (
     <section className="flex flex-col gap-8">
       <Box

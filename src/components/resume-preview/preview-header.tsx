@@ -23,7 +23,6 @@ const PreviewHeader = ({ formData }: any) => {
     };
     try {
       await html2pdf().set(opt).from(element).save();
-      console.log("Download complete");
     } catch (err) {
       console.error("Failed to generate PDF", err);
     }

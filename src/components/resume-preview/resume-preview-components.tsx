@@ -1,3 +1,4 @@
+import { OpenInNew } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import { parse, format, isValid } from "date-fns";
 
@@ -37,11 +38,11 @@ const PersonalInfoPreview = ({ personal }: { personal: any }) => {
             </a>
           </>
         )}
-        {personal?.linkedin && (
+        {personal?.linkedIn && (
           <>
             <span>|</span>
-            <a href={personal.linkedin} target="_blank" rel="noreferrer">
-              {personal?.linkedin || getPlaceHolder("linkedIn.com")}
+            <a href={personal.linkedIn} target="_blank" rel="noreferrer">
+              {personal?.linkedIn || getPlaceHolder("linkedIn.com")}
             </a>
           </>
         )}
@@ -72,7 +73,7 @@ const SkillsPreview = ({ skills }: any) => {
           {skillList.map((skill: string, i: number) => (
             <li
               key={i}
-              className="list-none nowrap py-[0.5] px-2 rounded-sm"
+              className="list-none nowrap py-[0.5] px-2 rounded-sm !text-xs"
               style={{ background: "rgba(55, 84, 109, 0.2)" }}
             >
               {skill}
@@ -109,7 +110,7 @@ const EducationPreview = ({ education }: { education: any[] }) => {
     <div className="flex flex-col gap-1">
       <h2 className="text-lg font-semibold border-b uppercase">Education</h2>
       {education.map((edu, i) => (
-        <div key={i} className="space-y-1">
+        <div key={i}>
           <div className="flex justify-between">
             <h3 className="font-semibold">
               {edu.degree}, <span className="font-normal">{edu.branch}</span>
@@ -132,7 +133,9 @@ const EducationPreview = ({ education }: { education: any[] }) => {
 const ExperiencePreview = ({ experience }: { experience: any[] }) => {
   if (
     !experience.length ||
-    !Object.values(experience[0]).some((value: any) => value?.trim() !== "")
+    !Object.values(experience[0])?.some(
+      (value: any) => (typeof value === "string" ? value?.trim() : "") !== ""
+    )
   )
     return null;
 
@@ -140,7 +143,7 @@ const ExperiencePreview = ({ experience }: { experience: any[] }) => {
     <div className="flex flex-col gap-1">
       <h2 className="text-lg font-semibold border-b uppercase">Experience</h2>
       {experience.map((exp, i) => (
-        <div key={i} className="space-y-1">
+        <div key={i}>
           <div className="flex justify-between">
             <div className="flex flex-col ">
               <h3 className="font-semibold">
@@ -179,12 +182,24 @@ const ProjectsPreview = ({ projects }: { projects: any[] }) => {
       <h2 className="text-lg font-semibold border-b uppercase">Projects</h2>
       {projects.map((proj, i) => (
         <div key={i} className="space-y-1">
-          <h3 className="font-semibold">{proj.title}</h3>
-          {proj.link && (
-            <a href={proj.link} target="_blank" rel="noreferrer">
-              {proj.link}
-            </a>
-          )}
+          <div className="font-semibold flex items-center gap-2">
+            <h3>{proj.title}</h3>
+            {proj.link && (
+              <a
+                href={proj.link}
+                target="_blank"
+                rel="noreferrer"
+                className="h-3 flex items-center"
+              >
+                <OpenInNew
+                  fontSize="small"
+                  fontWeight={600}
+                  className="!w-3 !h-3"
+                />
+              </a>
+            )}
+          </div>
+
           <p
             className="prose prose-sm max-w-none dark:prose-invert"
             dangerouslySetInnerHTML={{ __html: proj?.description }}
