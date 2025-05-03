@@ -16,7 +16,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/resumes-builder",
+        path: "/resume-builder",
         element: <ResumeForm />,
       },
       {

@@ -62,7 +62,7 @@ const PersonalInfoPreview = ({ personal }: { personal: any }) => {
 const SkillsPreview = ({ skills }: any) => {
   const skillList = skills
     ?.split(",")
-    .map((s: string) => s.trim())
+    .map((s: string) => s?.trim())
     .filter(Boolean);
   return (
     skillList.length > 0 && (
@@ -101,7 +101,7 @@ const SummaryPreview = ({ summary }: any) => {
 const EducationPreview = ({ education }: { education: any[] }) => {
   if (
     !education.length ||
-    !Object.values(education[0]).some((value: any) => value.trim() !== "")
+    !Object.values(education[0]).some((value: any) => value?.trim() !== "")
   )
     return null;
 
@@ -170,7 +170,7 @@ const ExperiencePreview = ({ experience }: { experience: any[] }) => {
 const ProjectsPreview = ({ projects }: { projects: any[] }) => {
   if (
     !projects.length ||
-    !Object.values(projects[0]).some((value: any) => value.trim() !== "")
+    !Object.values(projects[0]).some((value: any) => value?.trim() !== "")
   )
     return null;
 
@@ -203,7 +203,7 @@ const CertificationsPreview = ({
 }) => {
   if (
     !certifications.length ||
-    !Object.values(certifications[0]).some((value: any) => value.trim() !== "")
+    !Object.values(certifications[0]).some((value: any) => value?.trim() !== "")
   )
     return null;
 

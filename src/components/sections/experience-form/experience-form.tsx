@@ -74,7 +74,7 @@ const ExperienceForm = () => {
         const techWatch = watchedTechUsed[index]?.techUsed || "";
         const techTags = techWatch
           .split(",")
-          .map((t: string) => t.trim())
+          .map((t: string) => t?.trim())
           .filter(Boolean);
 
         return (

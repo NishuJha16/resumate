@@ -10,7 +10,7 @@ const SkillsForm = () => {
   const skillsString = useWatch({ name: "skills", control }) || "";
   const skillList = skillsString
     .split(",")
-    .map((s: string) => s.trim())
+    .map((s: string) => s?.trim())
     .filter((s: string) => s.length > 0);
 
   return (
