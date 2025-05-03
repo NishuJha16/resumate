@@ -46,12 +46,15 @@ const ExperienceForm = () => {
       >
         <div className="flex justify-between">
           <div className="flex flex-col">
-            <Typography variant="h5">Experience</Typography>
+            <Typography variant="h5" className="!text-lg md:!text-2xl">
+              Experience
+            </Typography>
             <Typography variant="body1">Enter your experience</Typography>
           </div>
         </div>
         <Button
           startIcon={<Add />}
+          className="!text-xs !capitalize"
           variant="outlined"
           onClick={() =>
             append({

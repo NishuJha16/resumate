@@ -13,7 +13,9 @@ const SummaryForm = () => {
   return (
     <section className="flex flex-col gap-8">
       <div className="flex flex-col">
-        <Typography variant="h5">Professional Summary</Typography>
+        <Typography variant="h5" className="!text-lg md:!text-2xl">
+          Professional Summary
+        </Typography>
         <Typography variant="body1">Enter your professional summary</Typography>
       </div>
       <Controller

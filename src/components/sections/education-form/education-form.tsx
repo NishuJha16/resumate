@@ -34,12 +34,15 @@ const EducationForm = () => {
         mb={2}
       >
         <div className="flex flex-col">
-          <Typography variant="h5">Education</Typography>
+          <Typography variant="h5" className="!text-lg md:!text-2xl">
+            Education
+          </Typography>
           <Typography variant="body1">Enter your Education details</Typography>
         </div>
         <Button
           variant="outlined"
           size="small"
+          className="!text-xs !capitalize"
           startIcon={<Add />}
           onClick={handleAdd}
         >

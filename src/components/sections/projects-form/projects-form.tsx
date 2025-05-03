@@ -43,7 +43,9 @@ const ProjectsForm = () => {
       >
         <div className="flex justify-between">
           <div className="flex flex-col">
-            <Typography variant="h5">Projects</Typography>
+            <Typography variant="h5" className="!text-lg md:!text-2xl">
+              Projects
+            </Typography>
             <Typography variant="body1">Enter your projects</Typography>
           </div>
         </div>
@@ -51,6 +53,7 @@ const ProjectsForm = () => {
           variant="outlined"
           size="small"
           startIcon={<Add />}
+          className="!text-xs !capitalize"
           onClick={handleAddProject}
         >
           Add Project

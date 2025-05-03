@@ -12,7 +12,9 @@ const PersonalInfo = () => {
   return (
     <section className="flex flex-col gap-8">
       <div className="flex flex-col">
-        <Typography variant="h5">Personal Information</Typography>
+        <Typography variant="h5" className="!text-lg md:!text-2xl">
+          Personal Information
+        </Typography>
         <Typography variant="body1">Enter your personal information</Typography>
       </div>
       <Grid container spacing={2}>

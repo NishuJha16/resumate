@@ -71,7 +71,7 @@ const ResumePreview = ({
 
   return (
     <div
-      className={`px-6 py-4 font-sans flex flex-col gap-2 text-sm min-h-full h-fit space-y-6 ${styles.resume_preview}`}
+      className={`px-6 py-4 font-sans mt-[48px] md:mt-0 flex flex-col gap-2 text-sm min-h-full h-fit space-y-6 ${styles.resume_preview}`}
       style={{
         backgroundColor: "#ffffff",
         color: "#000000",

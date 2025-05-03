@@ -34,12 +34,15 @@ const CertificationsForm = () => {
         mb={2}
       >
         <div className="flex flex-col">
-          <Typography variant="h5">Certifications</Typography>
+          <Typography variant="h5" className="!text-lg md:!text-2xl">
+            Certifications
+          </Typography>
           <Typography variant="body1">Enter your certifications</Typography>
         </div>
         <Button
           variant="outlined"
           size="small"
+          className="!text-xs !capitalize"
           startIcon={<Add />}
           onClick={handleAddCertification}
         >

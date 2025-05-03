@@ -35,15 +35,15 @@ const features = [
 export default function FeaturesSection() {
   return (
     <div className="py-8 sm:py-12">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 z-30 relative">
         <div className="mx-auto max-w-2xl lg:text-center">
           <div className="text-base font-semibold text-[rgb(245,124,6)]">
             Build better resumes
           </div>
-          <div className="mt-2 text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+          <div className="mt-2 text-4xl font-semibold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl">
             Key features of Resumate
           </div>
-          <div className="mt-6 text-lg text-gray-600">
+          <div className="mt-6 text-lg text-gray-600 dark:text-gray-300">
             Create a professional, ATS-friendly resume in minutes — no design
             skills needed.
           </div>
@@ -53,13 +53,13 @@ export default function FeaturesSection() {
           <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
             {features.map((feature, idx) => (
               <div key={idx} className="relative pl-16 fade-in">
-                <dt className="text-base font-semibold text-gray-900">
+                <dt className="text-base font-semibold text-gray-900 dark:text-gray-100">
                   <div className="absolute top-0 left-0 flex h-10 w-10 items-center justify-center rounded-lg bg-[rgb(245,124,6)]">
                     <div className="h-6 w-6 text-white">{feature.icon}</div>
                   </div>
                   {feature.title}
                 </dt>
-                <dd className="mt-2 text-base text-gray-600">
+                <dd className="mt-2 text-base text-gray-600 dark:text-gray-300">
                   {feature.description}
                 </dd>
               </div>

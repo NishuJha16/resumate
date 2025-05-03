@@ -10,27 +10,26 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import { format } from "date-fns";
 
 const SavedResumes = () => {
   const columns: GridColDef<any[number]>[] = [
-    { field: "id", headerName: "ID", width: 90 },
     {
       field: "name",
       headerName: "Name",
-      width: 150,
       flex: 1,
     },
     {
       field: "lastModified",
       headerName: "Last Modified",
-      width: 150,
-      flex: 1,
+      renderCell: (val) => (
+        <div>{format(val.row?.lastModified, "dd-MM-yyyy hh:mm a")}</div>
+      ),
     },
 
     {
       field: "actions",
       headerName: "Actions",
-      width: 300,
       renderCell: (val) => (
         <div className="flex gap-2 items-center h-full">
           <div className="hidden">
@@ -112,7 +111,7 @@ const SavedResumes = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 px-8 py-6 flex-1">
+    <div className="flex flex-col gap-4 p-2 md:px-8 md:py-6 flex-1">
       <div className="text-xl font-bold">Saved Resumes</div>
       <DataGrid
         rows={savedResumes?.map((data, index) => ({ ...data, id: index + 1 }))}

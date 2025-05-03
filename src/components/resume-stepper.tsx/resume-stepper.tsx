@@ -9,14 +9,9 @@ import SummaryForm from "../sections/summary-form/summary-form";
 import ResumePreview from "../resume-preview/resume-preview";
 import { useFormContext, useWatch } from "react-hook-form";
 import PreviewHeader from "../resume-preview/preview-header";
-import { Menu } from "@mui/icons-material";
 import { useEffect, useMemo, useState } from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "@hello-pangea/dnd";
+import { DropResult } from "@hello-pangea/dnd";
+import RearrangableLabels from "./RearrangableLabels";
 
 const formStepsMeta = [
   {
@@ -107,12 +102,12 @@ const ResumeFormStepper = ({ activeStep, updateStep }: any) => {
 
   return (
     <Box className="flex gap-4 w-full h-full lg:flex-row flex-col lg:overflow-y-hidden overflow-y-auto">
-      <Box className="flex flex-col gap-4 pt-2 flex-1 bg-[white] dark:bg-[rgb(24,124,120,0.2)]">
+      <Box className="flex flex-col-reverse md:flex-col gap-4 pt-0 md:pt-2 pb-2 md:pb-0 flex-1 bg-[white] dark:bg-[rgb(24,124,120,0.2)]">
         <Box className="flex-1 overflow-y-auto px-4">
           {formSteps?.find((data) => data.id === activeStep)?.component}
         </Box>
 
-        <Box className="flex justify-between items-center gap-8 border-t-1 border-gray-300 pt-4 pb-4 px-4 bg-[rgb(245,124,6,0.1)]">
+        <Box className="flex justify-between items-center gap-8 border-t-1 border-gray-300 p-2  md:p-4 bg-[rgb(245,124,6,0.1)]">
           <Button
             disabled={activeStep === formSteps?.[0]?.id}
             onClick={() =>
@@ -153,48 +148,18 @@ const ResumeFormStepper = ({ activeStep, updateStep }: any) => {
           </Button>
         </Box>
       </Box>
-      <div className="flex-1 flex flex-col bg-[rgb(236,236,236)] dark:bg-[#37546D]">
+      <div className="flex-1 flex flex-col bg-[rgb(236,236,236)] dark:bg-[#37546D] relative min-h-[520px]">
         <PreviewHeader formData={formData} />
-        <div className="flex-1 overflow-y-auto m-2">
+        <div className="flex-1 overflow-y-auto mx-0 mt-2 md:m-2 absolute top-10 -left-2 w-[700px] h-[900px] scale-50 origin-top-left md:block flex justify-center items-center md:scale-100 md:static md:w-full md:h-auto">
           <ResumePreview data={formData} steps={steps} />
         </div>
       </div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="steps">
-          {(provided) => (
-            <Box
-              ref={provided.innerRef}
-              className="flex flex-col text-xs  pt-4 bg-[white] dark:bg-[rgb(24,124,120,0.2)] "
-            >
-              {formSteps.map((value, index) => (
-                <Draggable
-                  key={`${value.id}-${index}`}
-                  draggableId={`${value.id}-${index}`}
-                  index={index}
-                >
-                  {(provided) => (
-                    <Box
-                      key={index}
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      className={`flex gap-1 px-6 p-2 items-center cursor-pointer hover:bg-[rgb(245,124,6,0.07)] ${
-                        value.id === activeStep &&
-                        "bg-[rgb(245,124,6,0.2)] font-bold"
-                      }`}
-                      onClick={() => updateStep(value.id)}
-                    >
-                      <Menu fontSize="small" color="primary" />
-                      <Box>{value.label}</Box>
-                    </Box>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </Box>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <RearrangableLabels
+        onDragEnd={onDragEnd}
+        formSteps={formSteps}
+        activeStep={activeStep}
+        updateStep={updateStep}
+      />
     </Box>
   );
 };

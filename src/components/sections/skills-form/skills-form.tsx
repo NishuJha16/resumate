@@ -17,7 +17,9 @@ const SkillsForm = () => {
     <section className="flex flex-col gap-8">
       <div className="flex justify-between">
         <div className="flex flex-col">
-          <Typography variant="h5">Skills</Typography>
+          <Typography variant="h5" className="!text-lg md:!text-2xl">
+            Skills
+          </Typography>
           <Typography variant="body1">Enter your skills</Typography>
         </div>
       </div>
