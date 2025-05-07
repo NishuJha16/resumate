@@ -69,7 +69,7 @@ const PreviewHeader = ({ formData }: any) => {
           placeholder="Enter Resume name"
         />
         {resumeNameError && (
-          <div className="text-red-500 text-[8px]">{resumeNameError}</div>
+          <div className="text-red-500 text-[10px]">{resumeNameError}</div>
         )}
       </div>
       <div className="flex gap-2">

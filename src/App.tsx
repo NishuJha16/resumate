@@ -12,7 +12,13 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 function App() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    const html = document.documentElement;
+    return (
+      html.classList.contains("dark") ||
+      localStorage.getItem("theme") === "dark"
+    );
+  });
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
