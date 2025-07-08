@@ -1,5 +1,5 @@
 import { Button, TextField } from "@mui/material";
-import { Download, Save } from "@mui/icons-material";
+import { Download, Save, Sync } from "@mui/icons-material";
 import html2pdf from "html2pdf.js";
 import { useState } from "react";
 
@@ -10,7 +10,6 @@ const PreviewHeader = ({ formData }: any) => {
   const handleDownload = async () => {
     const element = document.getElementById("resume-preview");
     const opt = {
-      margin: 8,
       filename: `${resumeName ? resumeName : "resume"}.pdf`,
       image: { type: "jpeg", quality: 1 },
       html2canvas: { scale: 2 },
@@ -27,6 +26,8 @@ const PreviewHeader = ({ formData }: any) => {
       console.error("Failed to generate PDF", err);
     }
   };
+
+  const handleSync = () => {};
 
   const handleSave = () => {
     if (resumeName) {
@@ -85,13 +86,13 @@ const PreviewHeader = ({ formData }: any) => {
         </Button>
         <Button
           className=" mb-4 !text-xs !capitalize"
-          onClick={handleDownload}
+          onClick={handleSync}
           aria-label="Download"
           color="primary"
           variant="outlined"
-          startIcon={<Download />}
+          startIcon={<Sync />}
         >
-          Download
+          Sync Latest changes
         </Button>
       </div>
     </div>

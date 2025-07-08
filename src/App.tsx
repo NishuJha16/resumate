@@ -3,13 +3,7 @@ import "./App.css";
 import Header from "./components/header/header";
 import { ThemeProvider } from "@mui/material";
 import { darkTheme, lightTheme } from "./theme";
-import { pdfjs } from "react-pdf";
 import { Outlet } from "react-router";
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString();
 
 function App() {
   const [isDark, setIsDark] = useState(() => {

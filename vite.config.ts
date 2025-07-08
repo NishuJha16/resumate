@@ -6,4 +6,7 @@ import svgr from "vite-plugin-svgr";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
+  optimizeDeps: {
+    include: ["pdfjs-dist/build/pdf.worker.min.js"],
+  },
 });

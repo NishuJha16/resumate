@@ -1,11 +1,25 @@
 .resume_preview{
-a{
+.link{
     color: #37546D;
 }
 span{
         font-size: 14px !important;
     }
 }
-.prose {
-    
-}
+
+// .resume_preview {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//   }
+  
+//   @media print {
+//     .resume_preview {
+//       margin: 0;
+//       box-shadow: none;
+//     }
+  
+//     .resume-page {
+//       page-break-after: always;
+//     }
+//   }

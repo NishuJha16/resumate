@@ -29,6 +29,16 @@ const getNavbarLinks = () => {
       >
         Saved Resumes
       </NavLink>
+      <NavLink
+        to="/resume-analyzer"
+        className={({ isActive }) =>
+          isActive
+            ? "text-white bg-[rgb(245,124,6)] rounded-sm px-2 py-1 whitespace-nowrap"
+            : "text-gray-700 dark:text-[rgba(255,255,255,0.7)] px-2 py-1 whitespace-nowrap"
+        }
+      >
+        Resume Analyzer
+      </NavLink>
 
       <ThemeToggle />
     </>

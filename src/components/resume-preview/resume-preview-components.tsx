@@ -2,11 +2,11 @@ import { OpenInNew } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import { parse, format, isValid } from "date-fns";
 
-const getPlaceHolder = (text: string) => {
+export const getPlaceHolder = (text: string) => {
   return <span style={{ color: "#888" }}>{text}</span>;
 };
 
-const formatDate = (date: string) => {
+export const formatDate = (date: string) => {
   if (!date) return "";
   const parsedDate = parse(date, "yyyy-MM", new Date());
   if (!isValid(parsedDate)) return "";
@@ -33,7 +33,12 @@ const PersonalInfoPreview = ({ personal }: { personal: any }) => {
         {personal?.github && (
           <>
             <span>|</span>
-            <a href={personal.github} target="_blank" rel="noreferrer">
+            <a
+              href={personal.github}
+              target="_blank"
+              rel="noreferrer"
+              className="link"
+            >
               {personal?.github || getPlaceHolder("github.com")}
             </a>
           </>
@@ -41,7 +46,12 @@ const PersonalInfoPreview = ({ personal }: { personal: any }) => {
         {personal?.linkedIn && (
           <>
             <span>|</span>
-            <a href={personal.linkedIn} target="_blank" rel="noreferrer">
+            <a
+              href={personal.linkedIn}
+              target="_blank"
+              rel="noreferrer"
+              className="link"
+            >
               {personal?.linkedIn || getPlaceHolder("linkedIn.com")}
             </a>
           </>
@@ -49,7 +59,12 @@ const PersonalInfoPreview = ({ personal }: { personal: any }) => {
         {personal?.otherUrl && (
           <>
             <span>|</span>
-            <a href={personal.otherUrl} target="_blank" rel="noreferrer">
+            <a
+              href={personal.otherUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="link"
+            >
               {personal?.otherUrl || getPlaceHolder("otherUrl.com")}
             </a>
           </>
@@ -73,7 +88,7 @@ const SkillsPreview = ({ skills }: any) => {
           {skillList.map((skill: string, i: number) => (
             <li
               key={i}
-              className="list-none nowrap py-[0.5] px-2 rounded-sm !text-xs"
+              className="list-none nowrap py-[4px] px-2 rounded-sm !text-xs"
               style={{ background: "rgba(55, 84, 109, 0.2)" }}
             >
               {skill}
@@ -147,7 +162,7 @@ const ExperiencePreview = ({ experience }: { experience: any[] }) => {
           <div className="flex justify-between">
             <div className="flex flex-col ">
               <h3 className="font-semibold">
-                {exp.role} — {exp.company}
+                {exp.role}, {exp.company}
               </h3>
               {exp?.location && <p>{exp.location}</p>}
             </div>
@@ -160,6 +175,7 @@ const ExperiencePreview = ({ experience }: { experience: any[] }) => {
             className="prose prose-sm max-w-none dark:prose-invert"
             dangerouslySetInnerHTML={{ __html: exp?.description }}
           />
+
           {exp.techStack && (
             <p className="italic text-sm">Tech Used: {exp.techStack}</p>
           )}

@@ -59,3 +59,7 @@ h2{
 .fade-in {
   animation: fadeIn 1s ease-out forwards;
 }
+iframe{
+  height: 100%;
+  width: 100%;
+}
