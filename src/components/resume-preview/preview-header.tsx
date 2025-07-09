@@ -1,31 +1,11 @@
 import { Button, TextField } from "@mui/material";
-import { Download, Save, Sync } from "@mui/icons-material";
-import html2pdf from "html2pdf.js";
+import { Save, Sync } from "@mui/icons-material";
 import { useState } from "react";
 
 const PreviewHeader = ({ formData }: any) => {
   const [resumeName, setResumeName] = useState<string>("");
   const [saveButtonText, setSaveButtonText] = useState<string>("Save");
   const [resumeNameError, setResumeNameError] = useState<string>("");
-  const handleDownload = async () => {
-    const element = document.getElementById("resume-preview");
-    const opt = {
-      filename: `${resumeName ? resumeName : "resume"}.pdf`,
-      image: { type: "jpeg", quality: 1 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      pagebreak: {
-        mode: ["legacy"],
-        putTotalPages: true,
-        // mode: ["avoid-all", "css", "legacy"],
-      },
-    };
-    try {
-      await html2pdf().set(opt).from(element).save();
-    } catch (err) {
-      console.error("Failed to generate PDF", err);
-    }
-  };
 
   const handleSync = () => {};
 
