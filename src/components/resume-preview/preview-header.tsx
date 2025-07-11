@@ -69,7 +69,7 @@ const PreviewHeader = ({
           startIcon={<Save />}
           onClick={handleSave}
         >
-          {isMobile && saveButtonText}
+          {!isMobile && saveButtonText}
         </Button>
         <Button
           className=" mb-4 !text-xs !capitalize"
@@ -79,7 +79,7 @@ const PreviewHeader = ({
           variant="outlined"
           startIcon={<Sync />}
         >
-          {isMobile && "Sync"}
+          {!isMobile && "Sync"}
         </Button>
         <Button
           className=" mb-4 !text-xs !capitalize"
@@ -89,7 +89,7 @@ const PreviewHeader = ({
           startIcon={<Download />}
           onClick={handleDownload}
         >
-          {isMobile && "Download"}
+          {!isMobile && "Download"}
         </Button>
       </div>
     </div>
