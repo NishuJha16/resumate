@@ -86,7 +86,7 @@ export default function ResumePreviewImage({ file }: { file: string }) {
       <Paper
         sx={{
           position: "absolute",
-          bottom: 16,
+          bottom: 32,
           left: "50%",
           display: "flex",
           justifyContent: "center",

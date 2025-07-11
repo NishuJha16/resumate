@@ -1,6 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import { Download, Save, Sync } from "@mui/icons-material";
 import { useState } from "react";
+import useIsMobile from "../common/useMobile";
 
 const PreviewHeader = ({
   formData,
@@ -41,6 +42,8 @@ const PreviewHeader = ({
     }
   };
 
+  const isMobile = useIsMobile();
+
   return (
     <div className="flex items-end gap-2 justify-between w-full bg-white dark:bg-[rgb(24,124,120,0.2)] p-1">
       <div className="flex flex-col gap-1">
@@ -66,7 +69,7 @@ const PreviewHeader = ({
           startIcon={<Save />}
           onClick={handleSave}
         >
-          {saveButtonText}
+          {isMobile && saveButtonText}
         </Button>
         <Button
           className=" mb-4 !text-xs !capitalize"
@@ -76,7 +79,7 @@ const PreviewHeader = ({
           variant="outlined"
           startIcon={<Sync />}
         >
-          Sync
+          {isMobile && "Sync"}
         </Button>
         <Button
           className=" mb-4 !text-xs !capitalize"
@@ -86,7 +89,7 @@ const PreviewHeader = ({
           startIcon={<Download />}
           onClick={handleDownload}
         >
-          Download
+          {isMobile && "Download"}
         </Button>
       </div>
     </div>
