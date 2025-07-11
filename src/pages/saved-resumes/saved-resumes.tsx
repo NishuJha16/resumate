@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Delete, DownloadForOffline } from "@mui/icons-material";
-import ResumePreview from "../../components/resume-preview/resume-preview";
 import html2pdf from "html2pdf.js";
 import {
   Button,
@@ -11,6 +10,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { format } from "date-fns";
+import ResumePreviewParent from "../../components/resume-preview/ResumePreviewParent";
 
 const SavedResumes = () => {
   const columns: GridColDef<any[number]>[] = [
@@ -33,8 +33,7 @@ const SavedResumes = () => {
       renderCell: (val) => (
         <div className="flex gap-2 items-center h-full">
           <div className="hidden">
-            <ResumePreview
-              id={`resume-preview-${val.row.id}`}
+            <ResumePreviewParent
               data={val.row?.formData}
               steps={val.row.steps}
             />

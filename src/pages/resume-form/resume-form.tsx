@@ -70,10 +70,6 @@ const ResumeForm = () => {
 
   const { watch, reset } = methods;
 
-  const onSubmit = (data: any) => {
-    console.log("📝 Resume Data:", data);
-  };
-
   useEffect(() => {
     const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (savedData) {
@@ -92,7 +88,7 @@ const ResumeForm = () => {
     <FormProvider {...methods}>
       <div className="flex gap-3 w-full p-4 ">
         <Box className="flex-[2] h-[100%] !px-0">
-          <form onSubmit={methods.handleSubmit(onSubmit)} className="h-full">
+          <form className="h-full">
             <ResumeFormStepper
               activeStep={activeStep}
               updateStep={setActiveStep}

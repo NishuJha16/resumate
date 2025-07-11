@@ -14,14 +14,13 @@ import ExperienceForm from "../sections/experience-form/experience-form";
 import ProjectsForm from "../sections/projects-form/projects-form";
 import SkillsForm from "../sections/skills-form/skills-form";
 import SummaryForm from "../sections/summary-form/summary-form";
-import ResumePreview from "../resume-preview/resume-preview";
 import { useFormContext, useWatch } from "react-hook-form";
-import PreviewHeader from "../resume-preview/preview-header";
 import { useEffect, useMemo, useState } from "react";
 import { DropResult } from "@hello-pangea/dnd";
 import RearrangableLabels from "./RearrangableLabels";
 import { DragIndicator } from "@mui/icons-material";
 import useIsMobile from "../common/useMobile";
+import ResumePreviewParent from "../resume-preview/ResumePreviewParent";
 
 const formStepsMeta = [
   {
@@ -205,11 +204,15 @@ const ResumeFormStepper = ({ activeStep, updateStep }: any) => {
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Box className="flex-1 flex flex-col bg-[rgb(236,236,236)] dark:bg-[#37546D] relative min-h-[520px]">
-          <PreviewHeader formData={formData} />
-          <div className="flex-1 overflow-y-hidden w-full ">
-            <ResumePreview data={formData} steps={steps} />
-          </div>
+        <Box
+          className="flex-1 overflow-y-hidden flex flex-col bg-[rgb(236,236,236)] dark:bg-[#37546D] relative min-h-[520px]"
+          style={{ maxWidth: "calc(100vw - 32px)" }}
+        >
+          <ResumePreviewParent
+            data={formData}
+            steps={steps}
+            activeStep={activeStep}
+          />
         </Box>
       </TabPanel>
       <IconButton
@@ -279,11 +282,12 @@ const ResumeFormStepper = ({ activeStep, updateStep }: any) => {
           </Button>
         </Box>
       </Box>
-      <Box className="flex-1 flex flex-col bg-[rgb(236,236,236)] dark:bg-[#37546D] relative min-h-[520px]">
-        <PreviewHeader formData={formData} />
-        <div className="flex-1 overflow-y-hidden w-full ">
-          <ResumePreview data={formData} steps={steps} />
-        </div>
+      <Box className="flex-1 flex max-w-[40%] flex-col bg-[rgb(236,236,236)] dark:bg-[#37546D] relative min-h-[520px]">
+        <ResumePreviewParent
+          data={formData}
+          steps={steps}
+          activeStep={activeStep}
+        />
       </Box>
       <RearrangableLabels
         onDragEnd={onDragEnd}

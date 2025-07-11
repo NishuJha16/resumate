@@ -1,13 +1,16 @@
 import { Button, TextField } from "@mui/material";
-import { Save, Sync } from "@mui/icons-material";
+import { Download, Save, Sync } from "@mui/icons-material";
 import { useState } from "react";
 
-const PreviewHeader = ({ formData }: any) => {
+const PreviewHeader = ({
+  formData,
+  handleSync,
+  handleDownload,
+  onFileNameChange,
+}: any) => {
   const [resumeName, setResumeName] = useState<string>("");
   const [saveButtonText, setSaveButtonText] = useState<string>("Save");
   const [resumeNameError, setResumeNameError] = useState<string>("");
-
-  const handleSync = () => {};
 
   const handleSave = () => {
     if (resumeName) {
@@ -46,6 +49,7 @@ const PreviewHeader = ({ formData }: any) => {
           onChange={(e) => {
             setResumeName(e.target.value);
             setResumeNameError("");
+            onFileNameChange(e.target.value);
           }}
           placeholder="Enter Resume name"
         />
@@ -72,7 +76,17 @@ const PreviewHeader = ({ formData }: any) => {
           variant="outlined"
           startIcon={<Sync />}
         >
-          Sync Latest changes
+          Sync
+        </Button>
+        <Button
+          className=" mb-4 !text-xs !capitalize"
+          aria-label="Save"
+          color="primary"
+          variant="outlined"
+          startIcon={<Download />}
+          onClick={handleDownload}
+        >
+          Download
         </Button>
       </div>
     </div>

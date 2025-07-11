@@ -8,7 +8,7 @@ import {
   ProjectsPreview,
   CertificationsPreview,
 } from "./pdf-preview-components";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 const sectionComponents = [
   {
@@ -53,20 +53,16 @@ const TemplateOne = ({
   data: any;
   id?: string;
 }) => {
-  const [initialSections, setInitialSections] = useState<any[]>([]);
-
-  useEffect(() => {
-    setInitialSections(sectionComponents);
-  }, []);
-
   const sections = useMemo(() => {
     return steps
       ? steps?.map((index, newOrder) => {
-          const updatedStep = { ...initialSections[index], order: newOrder };
+          const updatedStep = { ...sectionComponents[index], order: newOrder };
           return updatedStep;
         })
-      : initialSections;
-  }, [steps, initialSections]);
+      : sectionComponents;
+  }, [steps, sectionComponents]);
+
+  if (!data) return null;
 
   return (
     <Document style={{ marginBottom: 16 }}>

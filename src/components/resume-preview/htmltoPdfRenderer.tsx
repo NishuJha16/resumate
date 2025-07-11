@@ -64,17 +64,18 @@ function renderNode(node: Node, key: number = 0): React.ReactNode {
         return (
           <View key={key} style={styles.bullet}>
             <Text style={{ marginRight: 4 }}>•</Text>
-            <Text style={{ width: "100%" }}>{children}</Text>
+            <Text>{children}</Text>
           </View>
         );
       case "br":
         return <Text key={key}>{"\n"}</Text>;
       default:
+        // Insert a space between inline elements
         return (
           <Text key={key}>
             {children.map((child, i) => (
               <Text key={i}>{child}</Text>
-            ))}
+            ))}{" "}
           </Text>
         );
     }
