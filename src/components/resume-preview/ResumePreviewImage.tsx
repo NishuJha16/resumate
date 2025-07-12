@@ -28,7 +28,6 @@ export default function ResumePreviewImage({ file }: { file: string }) {
     setPageNumber((prev) => (prev < numPages ? prev + 1 : prev));
 
   const isMobile = useIsMobile();
-
   return (
     <Box
       sx={{

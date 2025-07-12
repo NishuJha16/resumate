@@ -7,36 +7,31 @@ export function useScaleToFit() {
 
   const calculateWidth = useCallback(() => {
     const outer = outerRef.current;
-    const inner = innerRef.current;
+    const canvas = innerRef.current?.querySelector("canvas");
 
-    if (outer && inner) {
+    if (outer && canvas) {
       const outerWidth = outer.offsetWidth;
-      const innerWidth = inner.scrollWidth || 600;
-      const scale = outerWidth / innerWidth;
-      const newWidth = innerWidth * (scale < 1 ? scale : 1);
+      const canvasWidth = canvas.offsetWidth || 600;
+
+      const scale = outerWidth / canvasWidth;
+      const newWidth = canvasWidth * (scale < 1 ? scale : 1);
+
       setWidth(Math.floor(newWidth));
     }
   }, []);
 
   useLayoutEffect(() => {
-    const resizeObserver = new ResizeObserver(calculateWidth);
-    const mutationObserver = new MutationObserver(calculateWidth);
+    const resizeObserver = new ResizeObserver(() => {
+      requestAnimationFrame(() => calculateWidth());
+    });
 
     if (outerRef.current) resizeObserver.observe(outerRef.current);
-    if (innerRef.current) {
-      resizeObserver.observe(innerRef.current);
-      mutationObserver.observe(innerRef.current, {
-        childList: true,
-        subtree: true,
-      });
-    }
 
     window.addEventListener("resize", calculateWidth);
-    requestAnimationFrame(() => requestAnimationFrame(calculateWidth));
+    requestAnimationFrame(() => calculateWidth());
 
     return () => {
       resizeObserver.disconnect();
-      mutationObserver.disconnect();
       window.removeEventListener("resize", calculateWidth);
     };
   }, [calculateWidth]);

@@ -1,13 +1,28 @@
-import { useState } from "react";
-import axios from "axios";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+  Alert,
+} from "@mui/material";
+// import axios from "axios";
+import { useRef, useState } from "react";
 import { getDocument } from "pdfjs-dist";
-import "../../pdfWorker"; // 👈 this sets workerSrc safely
+import "../../pdfWorker";
+import {
+  parseATSFeedback,
+  ATSFeedback,
+} from "../../components/common/atsParser";
+import { sampleResponse } from "./sampleResponse";
+import ATSResultView from "./ats-score-preview";
 
 export default function ResumeAnalyzer() {
   const [resumeText, setResumeText] = useState("");
-  const [analysis, setAnalysis] = useState("");
+  const [parsedResult, setParsedResult] = useState<ATSFeedback | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [selectedFileName, setSelectedFileName] = useState("");
 
   async function extractTextFromPDF(file: File): Promise<string> {
     const arrayBuffer = await file.arrayBuffer();
@@ -31,7 +46,8 @@ export default function ResumeAnalyzer() {
     try {
       const text = await extractTextFromPDF(file);
       setResumeText(text);
-      setAnalysis("");
+      setSelectedFileName(file.name);
+      setParsedResult(null);
       setError(null);
     } catch (err) {
       console.error("PDF error:", err);
@@ -44,36 +60,36 @@ export default function ResumeAnalyzer() {
 
     setLoading(true);
     setError(null);
-    setAnalysis("");
+    setParsedResult(null);
 
-    const prompt = `
-You are a resume analyzer AI. Analyze the following resume text and return:
-1. ATS score (out of 100)
-2. Strengths
-3. Weaknesses
-4. Top 5 skills
-5. Suggestions for improvement
+    //     const prompt = `
+    // You are a resume analyzer AI. Analyze the following resume text and return:
+    // 1. ATS score (out of 100)
+    // 2. Strengths
+    // 3. Weaknesses
+    // 4. Top 5 skills
+    // 5. Suggestions for improvement
 
-Resume Text:
-${resumeText}
-`;
+    // Resume Text:
+    // ${resumeText}
+    // `;
 
     try {
-      const response = await axios.get(
-        "https://free-chatgpt-api.p.rapidapi.com/chat-completion-one",
-        {
-          params: { prompt },
-          headers: {
-            "x-rapidapi-key":
-              "a240a7078bmsh2e1464212b3017dp1e5718jsnb5506cafa362",
-            "x-rapidapi-host": "free-chatgpt-api.p.rapidapi.com",
-          },
-        }
-      );
+      // const response = await axios.get(
+      //   "https://free-chatgpt-api.p.rapidapi.com/chat-completion-one",
+      //   {
+      //     params: { prompt },
+      //     headers: {
+      //       "x-rapidapi-key":
+      //         "a240a7078bmsh2e1464212b3017dp1e5718jsnb5506cafa362",
+      //       "x-rapidapi-host": "free-chatgpt-api.p.rapidapi.com",
+      //     },
+      //   }
+      // );
 
-      setAnalysis(
-        response.data.choices?.[0]?.message?.content || response.data
-      );
+      const raw = sampleResponse;
+      const parsed = parseATSFeedback(raw);
+      setParsedResult(parsed);
     } catch (err) {
       console.error("Analysis error:", err);
       setError("Failed to analyze resume.");
@@ -83,31 +99,52 @@ ${resumeText}
   }
 
   return (
-    <div style={{ maxWidth: 600, margin: "auto", padding: 20 }}>
-      <h2>Upload Resume PDF</h2>
-      <input type="file" accept="application/pdf" onChange={handleFileChange} />
-      <br />
-      <button
+    <Box sx={{ p: 3, overflowY: "auto" }}>
+      <Typography variant="h5" gutterBottom>
+        Resume ATS Analyzer
+      </Typography>
+
+      <input
+        type="file"
+        accept="application/pdf"
+        onChange={handleFileChange}
+        ref={fileInputRef}
+        hidden
+      />
+      <Button
+        variant="outlined"
+        component="span"
+        onClick={() => fileInputRef.current?.click()}
+        sx={{ mt: 2 }}
+      >
+        {selectedFileName
+          ? `Selected: ${selectedFileName}`
+          : "Choose PDF Resume"}
+      </Button>
+
+      <Button
+        variant="contained"
+        color="primary"
         disabled={loading || !resumeText}
         onClick={analyzeResume}
-        style={{ marginTop: 10 }}
+        sx={{ mt: 2, ml: 2 }}
       >
-        {loading ? "Analyzing..." : "Analyze Resume"}
-      </button>
+        {loading ? (
+          <>
+            <CircularProgress size={20} sx={{ mr: 1 }} /> Analyzing...
+          </>
+        ) : (
+          "Analyze Resume"
+        )}
+      </Button>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {analysis && (
-        <pre
-          style={{
-            background: "#f4f4f4",
-            padding: 16,
-            whiteSpace: "pre-wrap",
-            marginTop: 20,
-          }}
-        >
-          {analysis}
-        </pre>
+      {error && (
+        <Alert severity="error" sx={{ my: 2 }}>
+          {error}
+        </Alert>
       )}
-    </div>
+
+      {parsedResult && <ATSResultView parsedResult={parsedResult} />}
+    </Box>
   );
 }

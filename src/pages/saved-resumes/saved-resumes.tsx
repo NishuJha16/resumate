@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Delete, DownloadForOffline } from "@mui/icons-material";
-import html2pdf from "html2pdf.js";
 import {
   Button,
   Dialog,
@@ -11,6 +10,8 @@ import {
 } from "@mui/material";
 import { format } from "date-fns";
 import ResumePreviewParent from "../../components/resume-preview/ResumePreviewParent";
+import TemplateOne from "../../components/resume-preview/templateOne";
+import { pdf } from "@react-pdf/renderer";
 
 const SavedResumes = () => {
   const columns: GridColDef<any[number]>[] = [
@@ -83,22 +84,23 @@ const SavedResumes = () => {
   };
 
   const handleResumeDownload = async (data: any) => {
-    const element = document.getElementById(`resume-preview-${data?.id}`);
-    const opt = {
-      margin: 8,
-      filename: `${data?.name}.pdf`,
-      image: { type: "jpeg", quality: 1 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      pagebreak: {
-        mode: ["legacy"],
-        putTotalPages: true,
-      },
-    };
     try {
-      await html2pdf().set(opt).from(element).save();
+      if (!data?.formData || Object.keys(data?.formData).length === 0) return;
+
+      const blob = await pdf(
+        <TemplateOne data={data?.formData} steps={data?.steps} />
+      ).toBlob();
+
+      const newUrl = URL.createObjectURL(blob);
+      if (newUrl) {
+        const link = document.createElement("a");
+        link.href = newUrl;
+        link.download = data?.name;
+        link.click();
+        URL.revokeObjectURL(newUrl);
+      }
     } catch (err) {
-      console.error("Failed to generate PDF", err);
+      console.error("Failed to generate PDF:", err);
     }
   };
 
