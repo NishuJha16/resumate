@@ -43,7 +43,7 @@ const Authentication = ({ type = "login" }: any) => {
 
   return (
     <Box className="flex flex-1">
-      <Box className="flex flex-col flex-1 relative">
+      <Box className="hidden md:flex flex-col flex-1 relative ">
         <Box className="absolute top-[-60px] right-[-330px]">
           <img
             src={ResumeGif}
@@ -102,7 +102,7 @@ const Authentication = ({ type = "login" }: any) => {
           className="absolute bottom-0 right-[0] scale-x-[-1] scale-y-[-1]"
         />
 
-        <Paper className=" p-4 w-[380px] max-w-[380px]">
+        <Paper className="w-[90%] max-w-[90%] p-4 md:w-[380px] md:max-w-[380px]">
           {ComponentMapping?.[type as keyof typeof ComponentMapping]}
         </Paper>
       </Box>
