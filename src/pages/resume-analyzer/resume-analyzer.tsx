@@ -102,7 +102,7 @@ export default function ResumeAnalyzer() {
         },
         {
           headers: {
-            Authorization: `Bearer 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`,
+            Authorization: `Bearer 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`,
             "Content-Type": "application/json",
           },
         }

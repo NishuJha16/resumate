@@ -135,7 +135,7 @@ const Header = () => {
         maxWidth="xs"
         fullWidth
       >
-        <Box className="flex flex-col gap-4 justify-center p-4">
+        <Box className="flex flex-col gap-4 justify-center p-4 dark:bg-gray-900 bg-white">
           <Typography className="!text-xl !font-bold mt-4">LOGOUT</Typography>
           <Typography className="text-gray-500 mt-2">
             Are you sure you want to logout?
