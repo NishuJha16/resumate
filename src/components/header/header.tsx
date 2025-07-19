@@ -106,6 +106,13 @@ const Header = () => {
             {isMenuOpen && (
               <Paper className="absolute z-40 top-6 right-0 flex flex-col gap-1">
                 {getNavbarLinks()}
+                <Button
+                  variant="contained"
+                  className="!text-white"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  Logout
+                </Button>
               </Paper>
             )}
           </div>
