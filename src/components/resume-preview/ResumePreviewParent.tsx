@@ -5,7 +5,7 @@ import TemplateOne from "./templateOne";
 import PreviewHeader from "./preview-header";
 import { isEqual } from "lodash";
 import { LOCAL_STORAGE_KEY } from "../../pages/resume-form/resume-form";
-import { getCurrentResume, updateResume } from "../../supabase/methods";
+import { getResumes, updateResume } from "../../supabase/methods";
 
 const ResumePreviewParent = ({
   data,
@@ -41,13 +41,13 @@ const ResumePreviewParent = ({
     try {
       const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (localData) {
-        const resumeData = await getCurrentResume();
+        const resumeData = await getResumes();
         updateResume(
-          resumeData?.id,
+          resumeData?.[0]?.id,
           JSON.parse(localData!),
           { steps: steps },
           true,
-          resumeData?.resume_name
+          resumeData?.[0]?.resume_name
         );
       }
     } catch (error) {

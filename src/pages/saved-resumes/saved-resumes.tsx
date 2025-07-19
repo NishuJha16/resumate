@@ -12,7 +12,7 @@ import {
 import { format } from "date-fns";
 import TemplateOne from "../../components/resume-preview/templateOne";
 import { pdf } from "@react-pdf/renderer";
-import { getResumes } from "../../supabase/methods";
+import { deleteResume, getResumes } from "../../supabase/methods";
 import LoadingIcon from "../../assets/loader.svg";
 
 const SavedResumes = () => {
@@ -55,7 +55,7 @@ const SavedResumes = () => {
   const [selectedResume, setSelectedResume] = useState<{
     name: string;
     formData: any;
-    id: number;
+    id: string;
     steps: number[];
   } | null>(null);
 
@@ -67,13 +67,18 @@ const SavedResumes = () => {
     setSelectedResume(data);
   };
 
-  const onDelete = () => {
-    const newList = savedResumes?.filter(
-      (_, index) => index + 1 !== selectedResume?.id
-    );
-    setSavedResumes(newList);
-    localStorage.setItem("SAVED_RESUMES", JSON.stringify(newList));
-    setSelectedResume(null);
+  const onDelete = async () => {
+    if (!selectedResume?.id) return;
+    setLoading(true);
+    try {
+      await deleteResume(selectedResume.id);
+      getAllSavedResumes();
+    } catch (error) {
+      console.error("Error deleting resume:", error);
+    } finally {
+      setLoading(false);
+      setSelectedResume(null);
+    }
   };
 
   const handleClose = () => {
@@ -106,10 +111,10 @@ const SavedResumes = () => {
     try {
       const response = await getResumes();
 
-      const list = response?.map((resume: any, index: number) => ({
+      const list = response?.map((resume: any) => ({
         name: resume.resume_name,
         formData: resume.data,
-        id: index + 1,
+        id: resume.id,
         steps: resume.step_config?.steps || [0, 1, 2, 3, 4, 5, 6],
         lastModified: new Date(resume.updated_at),
       }));
@@ -138,7 +143,7 @@ const SavedResumes = () => {
         </Box>
       )}
       <DataGrid
-        rows={savedResumes?.map((data, index) => ({ ...data, id: index + 1 }))}
+        rows={savedResumes}
         columns={columns}
         initialState={{
           pagination: {

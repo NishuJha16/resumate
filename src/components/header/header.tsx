@@ -21,7 +21,7 @@ const getNavbarLinks = () => {
         to={String("/resume-builder")}
         className={({ isActive }) =>
           isActive
-            ? "text-white bg-[rgb(245,124,6)] rounded-sm px-2 py-1 whitespace-nowrap"
+            ? "text-[rgb(245,124,6)] border-b-2 border-amber-600 px-2 py-1 whitespace-nowrap"
             : "text-gray-700 dark:text-[rgba(255,255,255,0.7)] px-2 py-1 whitespace-nowrap"
         }
       >
@@ -32,7 +32,7 @@ const getNavbarLinks = () => {
         to="/saved-resumes"
         className={({ isActive }) =>
           isActive
-            ? "text-white bg-[rgb(245,124,6)] rounded-sm px-2 py-1 whitespace-nowrap"
+            ? "text-[rgb(245,124,6)] border-b-2 border-amber-600 px-2 py-1 whitespace-nowrap"
             : "text-gray-700 dark:text-[rgba(255,255,255,0.7)] px-2 py-1 whitespace-nowrap"
         }
       >
@@ -42,7 +42,7 @@ const getNavbarLinks = () => {
         to="/resume-analyzer"
         className={({ isActive }) =>
           isActive
-            ? "text-white bg-[rgb(245,124,6)] rounded-sm px-2 py-1 whitespace-nowrap"
+            ? "text-[rgb(245,124,6)] border-b-2 border-amber-600 px-2 py-1 whitespace-nowrap"
             : "text-gray-700 dark:text-[rgba(255,255,255,0.7)] px-2 py-1 whitespace-nowrap"
         }
       >
