@@ -26,6 +26,8 @@ export function extractJSONFromMarkdown(responseText: string): any | null {
   }
 }
 
+const token = import.meta.env.VITE_OPENAI_API_KEY || "";
+
 export default function ResumeAnalyzer() {
   const [resumeText, setResumeText] = useState("");
   const [parsedResult, setParsedResult] = useState<ATSFeedback | null>(null);
@@ -102,7 +104,7 @@ export default function ResumeAnalyzer() {
         },
         {
           headers: {
-            Authorization: `Bearer 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`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
