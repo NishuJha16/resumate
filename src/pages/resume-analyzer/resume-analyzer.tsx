@@ -5,16 +5,26 @@ import {
   Typography,
   Alert,
 } from "@mui/material";
-// import axios from "axios";
+import axios from "axios";
 import { useRef, useState } from "react";
 import { getDocument } from "pdfjs-dist";
 import "../../pdfWorker";
-import {
-  parseATSFeedback,
-  ATSFeedback,
-} from "../../components/common/atsParser";
-import { sampleResponse } from "./sampleResponse";
+import { ATSFeedback } from "../../components/common/atsParser";
 import ATSResultView from "./ats-score-preview";
+import { CloudUpload } from "@mui/icons-material";
+
+export function extractJSONFromMarkdown(responseText: string): any | null {
+  try {
+    const jsonMatch = responseText.match(/```json\s*([\s\S]*?)```/);
+    if (!jsonMatch || !jsonMatch[1]) return null;
+
+    const jsonText = jsonMatch[1].trim();
+    return JSON.parse(jsonText);
+  } catch (e) {
+    console.error("Failed to parse JSON from markdown response:", e);
+    return null;
+  }
+}
 
 export default function ResumeAnalyzer() {
   const [resumeText, setResumeText] = useState("");
@@ -62,33 +72,45 @@ export default function ResumeAnalyzer() {
     setError(null);
     setParsedResult(null);
 
-    //     const prompt = `
-    // You are a resume analyzer AI. Analyze the following resume text and return:
-    // 1. ATS score (out of 100)
-    // 2. Strengths
-    // 3. Weaknesses
-    // 4. Top 5 skills
-    // 5. Suggestions for improvement
-
-    // Resume Text:
-    // ${resumeText}
-    // `;
+    const prompt = `
+    You are an expert Applicant Tracking System (ATS) analyzer.
+    Analyze the resume text below and respond **only in valid JSON format**, with these exact keys:
+    
+    {
+      "score": number (0-100),
+      "strengths": string[],
+      "weaknesses": string[],
+      "topSkills": string[],
+      "suggestions": string[]
+    }
+    
+    Resume Text:
+    """${resumeText}"""
+    `;
 
     try {
-      // const response = await axios.get(
-      //   "https://free-chatgpt-api.p.rapidapi.com/chat-completion-one",
-      //   {
-      //     params: { prompt },
-      //     headers: {
-      //       "x-rapidapi-key":
-      //         "a240a7078bmsh2e1464212b3017dp1e5718jsnb5506cafa362",
-      //       "x-rapidapi-host": "free-chatgpt-api.p.rapidapi.com",
-      //     },
-      //   }
-      // );
+      const response = await axios.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        {
+          model: "google/gemma-3-4b-it:free",
+          messages: [
+            {
+              role: "user",
+              content: prompt,
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: `Bearer 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`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      const raw = sampleResponse;
-      const parsed = parseATSFeedback(raw);
+      const markdownWrapped =
+        response.data.choices?.[0]?.message?.content || "";
+      const parsed = extractJSONFromMarkdown(markdownWrapped);
       setParsedResult(parsed);
     } catch (err) {
       console.error("Analysis error:", err);
@@ -99,50 +121,55 @@ export default function ResumeAnalyzer() {
   }
 
   return (
-    <Box sx={{ p: 3, overflowY: "auto" }}>
+    <Box sx={{ p: 3, overflowY: "auto", width: "100%" }}>
       <Typography variant="h5" gutterBottom>
         Resume ATS Analyzer
       </Typography>
+      <Box className="flex flex-col items-center">
+        <input
+          type="file"
+          accept="application/pdf"
+          onChange={handleFileChange}
+          ref={fileInputRef}
+          hidden
+        />
 
-      <input
-        type="file"
-        accept="application/pdf"
-        onChange={handleFileChange}
-        ref={fileInputRef}
-        hidden
-      />
-      <Button
-        variant="outlined"
-        component="span"
-        onClick={() => fileInputRef.current?.click()}
-        sx={{ mt: 2 }}
-      >
-        {selectedFileName
-          ? `Selected: ${selectedFileName}`
-          : "Choose PDF Resume"}
-      </Button>
+        <CloudUpload
+          color="warning"
+          sx={{
+            fontSize: 64,
+            cursor: "pointer",
+          }}
+          onClick={() => fileInputRef.current?.click()}
+        />
+        <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+          {selectedFileName
+            ? `${selectedFileName}`
+            : "Upload your resume in PDF format to analyze its ATS compatibility."}
+        </Typography>
 
-      <Button
-        variant="contained"
-        color="primary"
-        disabled={loading || !resumeText}
-        onClick={analyzeResume}
-        sx={{ mt: 2, ml: 2 }}
-      >
-        {loading ? (
-          <>
-            <CircularProgress size={20} sx={{ mr: 1 }} /> Analyzing...
-          </>
-        ) : (
-          "Analyze Resume"
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={loading || !resumeText}
+          onClick={analyzeResume}
+          sx={{ mt: 2, ml: 2 }}
+        >
+          {loading ? (
+            <>
+              <CircularProgress size={20} sx={{ mr: 1 }} /> Analyzing...
+            </>
+          ) : (
+            "Analyze Resume"
+          )}
+        </Button>
+
+        {error && (
+          <Alert severity="error" sx={{ my: 2 }}>
+            {error}
+          </Alert>
         )}
-      </Button>
-
-      {error && (
-        <Alert severity="error" sx={{ my: 2 }}>
-          {error}
-        </Alert>
-      )}
+      </Box>
 
       {parsedResult && <ATSResultView parsedResult={parsedResult} />}
     </Box>

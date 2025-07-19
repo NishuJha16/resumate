@@ -6,7 +6,13 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import useIsMobile from "../common/useMobile";
 import Loader from "../../assets/loader.svg";
 
-export default function ResumePreviewImage({ file }: { file: string }) {
+export default function ResumePreviewImage({
+  file,
+  loading,
+}: {
+  file: string;
+  loading?: boolean;
+}) {
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const { outerRef, innerRef, width, calculateWidth } = useScaleToFit();
@@ -46,40 +52,52 @@ export default function ResumePreviewImage({ file }: { file: string }) {
           overflowY: "auto",
         }}
       >
-        <Document
-          file={file}
-          onLoadSuccess={onLoadSuccess}
-          loading={
-            <Box className="absolute top-0 left-0 right-0 bottom-0 flex flex-col flex-1 h-full justify-center items-center">
-              <img width={50} height={50} src={Loader} />
-              <Typography
-                variant="caption"
-                sx={{ mt: 1, color: "text.secondary" }}
-              >
-                Loading Preview
-              </Typography>
-            </Box>
-          }
-        >
-          <Box
-            key={`page_${pageNumber}`}
-            sx={{ my: 4, textAlign: "center" }}
-            ref={innerRef}
-          >
-            <Page
-              pageNumber={pageNumber}
-              width={width}
-              renderTextLayer={false}
-              renderAnnotationLayer={false}
-            />
+        {loading ? (
+          <Box className="absolute top-0 left-0 right-0 bottom-0 flex flex-col flex-1 h-full justify-center items-center">
+            {/* <img width={50} height={50} src={Loader} /> */}
             <Typography
               variant="caption"
               sx={{ mt: 1, color: "text.secondary" }}
             >
-              Page {pageNumber} of {numPages}
+              ...Loading Preview
             </Typography>
           </Box>
-        </Document>
+        ) : (
+          <Document
+            file={file}
+            onLoadSuccess={onLoadSuccess}
+            loading={
+              <Box className="absolute top-0 left-0 right-0 bottom-0 flex flex-col flex-1 h-full justify-center items-center">
+                <img width={50} height={50} src={Loader} />
+                <Typography
+                  variant="caption"
+                  sx={{ mt: 1, color: "text.secondary" }}
+                >
+                  Loading Preview
+                </Typography>
+              </Box>
+            }
+          >
+            <Box
+              key={`page_${pageNumber}`}
+              sx={{ my: 4, textAlign: "center" }}
+              ref={innerRef}
+            >
+              <Page
+                pageNumber={pageNumber}
+                width={width}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+              />
+              <Typography
+                variant="caption"
+                sx={{ mt: 1, color: "text.secondary" }}
+              >
+                Page {pageNumber} of {numPages}
+              </Typography>
+            </Box>
+          </Document>
+        )}
       </Box>
 
       <Paper

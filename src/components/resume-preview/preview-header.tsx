@@ -2,6 +2,7 @@ import { Button, TextField } from "@mui/material";
 import { Download, Save, Sync } from "@mui/icons-material";
 import { useState } from "react";
 import useIsMobile from "../common/useMobile";
+import { createResume } from "../../supabase/methods";
 
 const PreviewHeader = ({
   formData,
@@ -13,30 +14,22 @@ const PreviewHeader = ({
   const [saveButtonText, setSaveButtonText] = useState<string>("Save");
   const [resumeNameError, setResumeNameError] = useState<string>("");
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (resumeName) {
       setSaveButtonText("Saving...");
-      const savedResumes = localStorage.getItem("SAVED_RESUMES");
       const steps = localStorage.getItem("STEPS");
-      let previousResumes = [];
-      if (savedResumes) {
-        previousResumes = JSON.parse(savedResumes) ?? [];
-      }
-      localStorage.setItem(
-        "SAVED_RESUMES",
-        JSON.stringify([
-          ...previousResumes,
-          {
-            name: resumeName,
-            formData,
-            lastModified: new Date(),
-            steps: steps ? JSON.parse(steps) : [0, 1, 2, 3, 4, 5, 6],
-          },
-        ])
-      );
-      setTimeout(() => {
+      try {
+        await createResume(
+          formData,
+          { steps: steps ? JSON.parse(steps) : [0, 1, 2, 3, 4, 5, 6] },
+          true,
+          resumeName
+        );
+      } catch (error) {
+        console.error("Error saving resume:", error);
+      } finally {
         setSaveButtonText("Save");
-      }, 1000);
+      }
     } else {
       setResumeNameError("Please enter resume name to save this version");
     }

@@ -63,3 +63,9 @@ iframe{
   height: 100%;
   width: 100%;
 }
+
+.rsw-ce{
+  span,p,div{
+  font-size: 12px !important;
+  }
+}

@@ -210,7 +210,7 @@ const ExperienceForm = () => {
                   name={`${base}.description`}
                   control={control}
                   render={({ field }) => (
-                    <Editor {...field} style={{ fontSize: 12 }} />
+                    <Editor {...field} style={{ fontSize: 14 }} />
                   )}
                 />
               </Grid>

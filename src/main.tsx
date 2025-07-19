@@ -6,27 +6,50 @@ import ResumeForm from "./pages/resume-form/resume-form.tsx";
 import Home from "./pages/home/home.tsx";
 import SavedResumes from "./pages/saved-resumes/saved-resumes.tsx";
 import ResumeAnalyzer from "./pages/resume-analyzer/resume-analyzer.tsx";
+import MainLayout from "./layouts/main-layout/main-layout.tsx";
+import Authentication from "./pages/authentication/authentication.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
     Component: App,
     children: [
       {
-        index: true,
-        element: <Home />,
+        path: "/login",
+        element: <Authentication type="login" />,
       },
       {
-        path: "/resume-builder",
-        element: <ResumeForm />,
+        path: "/register",
+        element: <Authentication type="register" />,
       },
       {
-        path: "/saved-resumes",
-        element: <SavedResumes />,
+        path: "/forgot-password",
+        element: <Authentication type="forgotPassword" />,
       },
       {
-        path: "/resume-analyzer",
-        element: <ResumeAnalyzer />,
+        path: "/update-password",
+        element: <Authentication type="updatePassword" />,
+      },
+      {
+        path: "/",
+        element: <MainLayout />,
+        children: [
+          {
+            index: true,
+            element: <Home />,
+          },
+          {
+            path: "/resume-builder",
+            element: <ResumeForm />,
+          },
+          {
+            path: "/saved-resumes",
+            element: <SavedResumes />,
+          },
+          {
+            path: "/resume-analyzer",
+            element: <ResumeAnalyzer />,
+          },
+        ],
       },
     ],
   },

@@ -17,8 +17,8 @@ const Home = () => {
           <img src={Deco} className="absolute left-0 fade-in" />
           <div className="flex flex-col z-20 justify-center gap-6 flex-1">
             <div className="text-[24px] md:text-[40px] font-semibold text-gray-900 dark:text-gray-100">
-              Craft the{" "}
-              <span className="text-[rgb(245,124,6)]">Perfect Resume</span> –
+              Craft the
+              <span className="text-[rgb(245,124,6)]"> Perfect Resume</span> –
               Optimized for ATS & Hiring Managers
             </div>
             <div className="text-md text-gray-700 dark:text-gray-300">

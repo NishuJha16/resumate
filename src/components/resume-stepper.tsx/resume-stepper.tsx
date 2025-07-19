@@ -82,9 +82,9 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-const defaultSteps = [0, 1, 2, 3, 4, 5, 6];
+export const defaultSteps = [0, 1, 2, 3, 4, 5, 6];
 
-const ResumeFormStepper = ({ activeStep, updateStep }: any) => {
+const ResumeFormStepper = ({ activeStep, updateStep, loading }: any) => {
   const [steps, setSteps] = useState(defaultSteps);
   const [value, setValue] = useState<number>(0);
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
@@ -287,6 +287,7 @@ const ResumeFormStepper = ({ activeStep, updateStep }: any) => {
           data={formData}
           steps={steps}
           activeStep={activeStep}
+          loading={loading}
         />
       </Box>
       <RearrangableLabels

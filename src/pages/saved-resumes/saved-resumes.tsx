@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Delete, DownloadForOffline } from "@mui/icons-material";
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -9,11 +10,13 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { format } from "date-fns";
-import ResumePreviewParent from "../../components/resume-preview/ResumePreviewParent";
 import TemplateOne from "../../components/resume-preview/templateOne";
 import { pdf } from "@react-pdf/renderer";
+import { getResumes } from "../../supabase/methods";
+import LoadingIcon from "../../assets/loader.svg";
 
 const SavedResumes = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const columns: GridColDef<any[number]>[] = [
     {
       field: "name",
@@ -33,12 +36,6 @@ const SavedResumes = () => {
       headerName: "Actions",
       renderCell: (val) => (
         <div className="flex gap-2 items-center h-full">
-          <div className="hidden">
-            <ResumePreviewParent
-              data={val.row?.formData}
-              steps={val.row.steps}
-            />
-          </div>
           <DownloadForOffline
             fontWeight={400}
             color="primary"
@@ -104,16 +101,42 @@ const SavedResumes = () => {
     }
   };
 
-  useEffect(() => {
-    const savedData = localStorage.getItem("SAVED_RESUMES");
-    if (savedData) {
-      setSavedResumes(JSON.parse(savedData));
+  const getAllSavedResumes = async () => {
+    setLoading(true);
+    try {
+      const response = await getResumes();
+
+      const list = response?.map((resume: any, index: number) => ({
+        name: resume.resume_name,
+        formData: resume.data,
+        id: index + 1,
+        steps: resume.step_config?.steps || [0, 1, 2, 3, 4, 5, 6],
+        lastModified: new Date(resume.updated_at),
+      }));
+
+      if (response && response.length > 0) {
+        setSavedResumes(list);
+      }
+    } catch (error) {
+      console.error("Error fetching saved resumes:", error);
+      setSavedResumes([]);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    getAllSavedResumes();
   }, []);
 
   return (
     <div className="flex flex-col gap-4 p-2 md:px-8 md:py-6 flex-1">
       <div className="text-xl font-bold">Saved Resumes</div>
+      {loading && (
+        <Box className="flex items-center justify-center h-full w-full fixed top-0 left-0 bg-[rgba(255,255,255,0.5)] z-50 ">
+          <img src={LoadingIcon} width={64} />
+        </Box>
+      )}
       <DataGrid
         rows={savedResumes?.map((data, index) => ({ ...data, id: index + 1 }))}
         columns={columns}
@@ -124,6 +147,7 @@ const SavedResumes = () => {
             },
           },
         }}
+        loading={loading}
         className="w-full"
         disableColumnFilter
         pageSizeOptions={[5]}

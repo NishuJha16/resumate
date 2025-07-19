@@ -3,7 +3,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box } from "@mui/material";
 import { resumeSchema } from "./schema";
 import { useEffect, useState } from "react";
-import ResumeFormStepper from "../../components/resume-stepper.tsx/resume-stepper";
+import ResumeFormStepper, {
+  defaultSteps,
+} from "../../components/resume-stepper.tsx/resume-stepper";
+import { createResume, getResumes } from "../../supabase/methods";
+import LoadingIcon from "../../assets/loader.svg";
 
 const defaultValues = {
   personal: {
@@ -57,10 +61,11 @@ const defaultValues = {
   ],
 };
 
-const LOCAL_STORAGE_KEY = "resumeFormData";
+export const LOCAL_STORAGE_KEY = "resumeFormData";
 
 const ResumeForm = () => {
   const [activeStep, setActiveStep] = useState("personal");
+  const [loading, setLoading] = useState(false);
 
   const methods = useForm({
     resolver: yupResolver(resumeSchema),
@@ -70,12 +75,26 @@ const ResumeForm = () => {
 
   const { watch, reset } = methods;
 
-  useEffect(() => {
-    const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (savedData) {
-      reset(JSON.parse(savedData));
+  const handleInitialFormData = async () => {
+    setLoading(true);
+    try {
+      const data = await getResumes();
+      if (!data?.length) {
+        createResume(defaultValues, { steps: defaultSteps }, true);
+      } else {
+        const latestResume = data?.[data.length - 1];
+        reset({ ...latestResume?.data });
+      }
+    } catch (error) {
+      console.error("Error fetching resumes:", error);
+    } finally {
+      setLoading(false);
     }
-  }, [reset]);
+  };
+
+  useEffect(() => {
+    handleInitialFormData();
+  }, []);
 
   useEffect(() => {
     const subscription = watch((value) => {
@@ -85,18 +104,26 @@ const ResumeForm = () => {
   }, [watch]);
 
   return (
-    <FormProvider {...methods}>
-      <div className="flex gap-3 w-full p-4 ">
-        <Box className="flex-[2] h-[100%] !px-0">
-          <form className="h-full">
-            <ResumeFormStepper
-              activeStep={activeStep}
-              updateStep={setActiveStep}
-            />
-          </form>
+    <>
+      <FormProvider {...methods}>
+        <div className="flex gap-3 w-full p-4 ">
+          <Box className="flex-[2] h-[100%] !px-0">
+            <form className="h-full">
+              <ResumeFormStepper
+                activeStep={activeStep}
+                updateStep={setActiveStep}
+                loading={loading}
+              />
+            </form>
+          </Box>
+        </div>
+      </FormProvider>
+      {loading && (
+        <Box className="flex items-center justify-center h-full w-full fixed top-0 left-0 bg-[rgba(255,255,255,0.5)] z-50 ">
+          <img src={LoadingIcon} width={64} />
         </Box>
-      </div>
-    </FormProvider>
+      )}
+    </>
   );
 };
 

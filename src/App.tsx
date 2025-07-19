@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Header from "./components/header/header";
 import { ThemeProvider } from "@mui/material";
 import { darkTheme, lightTheme } from "./theme";
 import { Outlet } from "react-router";
 import { pdfjs } from "react-pdf";
 import pdfWorkerSrc from "pdfjs-dist/build/pdf.worker.min?url";
+
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerSrc;
 
 function App() {
@@ -37,10 +37,7 @@ function App() {
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <div className="min-h-screen h-full flex flex-col  bg-[#F2F3F7] text-black dark:bg-gray-900 dark:text-white transition-colors">
-        <Header />
-        <div className="pt-[56px] flex gap-2 h-full">
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
     </ThemeProvider>
   );

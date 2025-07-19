@@ -1,9 +1,18 @@
 import ThemeToggle from "../theme-toggle/theme-toggle-button";
 import Logo from "../../assets/resumate-logo.png";
-import { NavLink, useLocation } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import { Menu } from "@mui/icons-material";
-import { ClickAwayListener, Paper } from "@mui/material";
+import {
+  Box,
+  Button,
+  ClickAwayListener,
+  Dialog,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
+import { supabase } from "../../supabase/config";
+import LoadingIcon from "../../assets/loader.svg";
 
 const getNavbarLinks = () => {
   return (
@@ -39,16 +48,33 @@ const getNavbarLinks = () => {
       >
         Resume Analyzer
       </NavLink>
-
-      <ThemeToggle />
     </>
   );
 };
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const location = useLocation();
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Logout error:", error.message);
+      } else {
+        navigate("/login");
+        localStorage.clear();
+      }
+    } catch (error) {
+      console.error("Unexpected error during logout:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -86,16 +112,46 @@ const Header = () => {
         </ClickAwayListener>
         <div className="items-center justify-center gap-4 mr-2 dark:text-darkText-400 hidden md:flex">
           {getNavbarLinks()}
-          {/* <div className="relative">
-            <a
-              className="inline-block py-1.5 font-semibold px-4 text-sm bg-[rgb(245,124,6)] text-white rounded-md hover:bg-opacity-90 transition-colors"
-              href="/login?redirect=%2F"
-            >
-              Login
-            </a>
-          </div> */}
+          <Button
+            variant="contained"
+            className="!text-white"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Logout
+          </Button>
+          <ThemeToggle />
         </div>
       </div>
+      <Dialog
+        onClose={() => setIsModalOpen(false)}
+        open={isModalOpen}
+        maxWidth="xs"
+        fullWidth
+      >
+        <Box className="flex flex-col gap-4 justify-center p-4">
+          <Typography className="!text-xl !font-bold mt-4">LOGOUT</Typography>
+          <Typography className="text-gray-500 mt-2">
+            Are you sure you want to logout?
+          </Typography>
+          <Box className="flex gap-4 justify-end mt-4">
+            <Button
+              variant="contained"
+              className="bg-[rgb(245,124,6)] !text-white !capitalize"
+              onClick={handleLogout}
+              disabled={loading}
+            >
+              {loading ? <img src={LoadingIcon} width={32} /> : "Yes"}
+            </Button>
+            <Button
+              variant="outlined"
+              className="!text-[rgb(245,124,6)] !capitalize"
+              onClick={() => setIsModalOpen(false)}
+            >
+              No
+            </Button>
+          </Box>
+        </Box>
+      </Dialog>
     </header>
   );
 };

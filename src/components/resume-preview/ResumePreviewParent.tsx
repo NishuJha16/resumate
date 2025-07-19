@@ -4,15 +4,19 @@ import { pdf } from "@react-pdf/renderer";
 import TemplateOne from "./templateOne";
 import PreviewHeader from "./preview-header";
 import { isEqual } from "lodash";
+import { LOCAL_STORAGE_KEY } from "../../pages/resume-form/resume-form";
+import { getCurrentResume, updateResume } from "../../supabase/methods";
 
 const ResumePreviewParent = ({
   data,
   steps,
   activeStep = 0,
+  loading = false,
 }: {
   data: any;
   steps?: number[];
   activeStep?: number;
+  loading?: boolean;
 }) => {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("resume.pdf");
@@ -33,13 +37,32 @@ const ResumePreviewParent = ({
     }
   };
 
+  const handleUpdateResume = async () => {
+    try {
+      const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (localData) {
+        const resumeData = await getCurrentResume();
+        updateResume(
+          resumeData?.id,
+          JSON.parse(localData!),
+          { steps: steps },
+          true,
+          resumeData?.resume_name
+        );
+      }
+    } catch (error) {
+      console.error("Error updating resume:", error);
+    }
+  };
+
   useEffect(() => {
     const hasDataChanged = !isEqual(previousData.current, data);
     if (hasDataChanged) {
       previousData.current = data;
       generatePdfBlob();
+      handleUpdateResume();
     }
-  }, [activeStep, steps]);
+  }, [activeStep, steps, loading]);
 
   const handleDownload = () => {
     if (blobUrl) {
@@ -65,7 +88,7 @@ const ResumePreviewParent = ({
         handleSync={generatePdfBlob}
         onFileNameChange={setFileName}
       />
-      {blobUrl && <ResumePreviewImage file={blobUrl} />}
+      {blobUrl && <ResumePreviewImage loading={loading} file={blobUrl} />}
     </Fragment>
   );
 };

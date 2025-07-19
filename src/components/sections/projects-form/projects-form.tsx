@@ -105,7 +105,7 @@ const ProjectsForm = () => {
                 name={`projects.${index}.description`}
                 control={control}
                 render={({ field }) => (
-                  <Editor {...field} style={{ fontSize: 12 }} />
+                  <Editor {...field} style={{ fontSize: 14 }} />
                 )}
               />
             </Grid>
