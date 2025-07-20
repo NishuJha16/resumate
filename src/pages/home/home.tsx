@@ -27,7 +27,7 @@ const Home = () => {
               writing skills required.
             </div>
             <div className="text-lg font-bold text-gray-700 dark:text-gray-300">
-              Start Building Your Resume – It’s Free and Always Will Be
+              Create a Standout Resume and Land the Opportunities You Deserve
             </div>
             <Button
               endIcon={<ArrowForward />}

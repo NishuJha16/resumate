@@ -112,6 +112,7 @@ export default function ResumePreviewImage({
           zIndex: 10,
           transform: "translate(-50%, 0)",
         }}
+        className="dark:!bg-gray-900 !bg-white"
       >
         <IconButton onClick={handlePrev} disabled={pageNumber <= 1}>
           <ChevronLeft />

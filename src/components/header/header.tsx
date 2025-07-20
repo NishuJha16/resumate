@@ -1,7 +1,7 @@
 import ThemeToggle from "../theme-toggle/theme-toggle-button";
 import Logo from "../../assets/resumate-logo.png";
 import { NavLink, useLocation, useNavigate } from "react-router";
-import { Menu } from "@mui/icons-material";
+import { Logout, Menu } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -101,27 +101,27 @@ const Header = () => {
         <ClickAwayListener
           onClickAway={() => isMenuOpen && setIsMenuOpen(false)}
         >
-          <div className="relative mr-2 flex md:hidden">
+          <div className="relative mr-2 flex gap-2 md:hidden">
             <Menu onClick={() => setIsMenuOpen(!isMenuOpen)} />
             {isMenuOpen && (
               <Paper className="absolute z-40 top-6 right-0 flex flex-col gap-1">
                 {getNavbarLinks()}
-                <Button
-                  variant="contained"
-                  className="!text-white"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  Logout
-                </Button>
               </Paper>
             )}
+            <Button
+              variant="contained"
+              className="!text-white !capitalize !min-w-[48px]"
+              startIcon={<Logout />}
+              onClick={() => setIsModalOpen(true)}
+            ></Button>
           </div>
         </ClickAwayListener>
         <div className="items-center justify-center gap-4 mr-2 dark:text-darkText-400 hidden md:flex">
           {getNavbarLinks()}
           <Button
             variant="contained"
-            className="!text-white"
+            className="!text-white !capitalize"
+            startIcon={<Logout />}
             onClick={() => setIsModalOpen(true)}
           >
             Logout

@@ -56,13 +56,18 @@ const ResumePreviewParent = ({
   };
 
   useEffect(() => {
+    generatePdfBlob();
+    handleUpdateResume();
+  }, [steps]);
+
+  useEffect(() => {
     const hasDataChanged = !isEqual(previousData.current, data);
-    if (hasDataChanged) {
-      previousData.current = data;
-      generatePdfBlob();
-      handleUpdateResume();
-    }
-  }, [activeStep, steps, loading]);
+    if (!hasDataChanged) return;
+
+    previousData.current = data;
+    generatePdfBlob();
+    handleUpdateResume();
+  }, [activeStep, loading]);
 
   const handleDownload = () => {
     if (blobUrl) {
