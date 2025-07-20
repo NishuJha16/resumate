@@ -1,4 +1,4 @@
-import ResumeImage from "../../assets/resume-screenshot.png";
+import ResumeImage from "../../assets/hiring.svg";
 import Deco from "../../assets/deco.svg";
 import Deco2 from "../../assets/deco2.svg";
 import ResumeGif from "../../assets/owl.gif";
@@ -51,7 +51,7 @@ const Home = () => {
                 src={ResumeImage}
                 width={450}
                 height={700}
-                className="mx-auto expand-center border-gray-300 dark:border-darkBorder-700 shadow-xl rounded-2xl border-2 dark:shadow-gray-800 relative z-20"
+                className="mx-auto expand-center rounded-2xl relative z-20"
               />
             </div>
           </div>
