@@ -146,11 +146,7 @@ const ResumeFormStepper = ({ activeStep, updateStep, loading }: any) => {
   return isMobile ? (
     <Box className="relative flex flex-1 flex-col h-full">
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
+        <Tabs value={value} onChange={handleChange}>
           <Tab label="BASIC DETAILS" />
           <Tab label="PREVIEW" />
         </Tabs>

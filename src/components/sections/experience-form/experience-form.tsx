@@ -198,7 +198,7 @@ const ExperienceForm = () => {
                         },
                       }}
                       label="I presently work here"
-                      control={<Checkbox {...field} />}
+                      control={<Checkbox {...field} checked={field.value} />}
                     ></FormControlLabel>
                   )}
                 />
