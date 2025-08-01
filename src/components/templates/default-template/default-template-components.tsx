@@ -1,7 +1,6 @@
-// pdf-preview-components.tsx (React-PDF compatible versions)
 import { Text, View, StyleSheet, Link } from "@react-pdf/renderer";
-import { parse, format, isValid } from "date-fns";
-import { HtmlToPdfRenderer } from "./htmltoPdfRenderer";
+import { HtmlToPdfRenderer } from "../../resume-preview/htmltoPdfRenderer";
+import { formatDate } from "../../../utils/date-methods";
 
 const styles = StyleSheet.create({
   section: {
@@ -65,17 +64,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export const getPlaceholder = (text: string) => (
-  <Text style={{ color: "#888" }}>{text}</Text>
-);
-
-export const formatDate = (date: string) => {
-  if (!date) return "";
-  const parsedDate = parse(date, "yyyy-MM", new Date());
-  if (!isValid(parsedDate)) return "";
-  return format(parsedDate, "MMMM, yyyy");
-};
-
 export const PersonalInfoPreview = ({ personal }: { personal: any }) => (
   <View style={styles.section}>
     <Text style={{ fontSize: 14, textAlign: "center", fontWeight: "bold" }}>
@@ -91,13 +79,13 @@ export const PersonalInfoPreview = ({ personal }: { personal: any }) => (
           {personal.github}
         </Link>
       )}
-      {personal?.github && " | "}
+      {personal?.linkedIn && " | "}
       {personal?.linkedIn && (
         <Link style={styles.headerLink} src={personal.linkedIn}>
           {personal.linkedIn}
         </Link>
       )}
-      {personal?.linkedIn && " | "}
+      {personal?.otherUrl && " | "}
       {personal?.otherUrl && (
         <Link style={styles.headerLink} src={personal.otherUrl}>
           {personal.otherUrl}

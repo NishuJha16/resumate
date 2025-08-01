@@ -3,7 +3,8 @@ export const createResume = async (
   resumeData: any,
   stepConfig: any,
   isCurrent = false,
-  resumeName?: string
+  resumeName?: string,
+  resumeTemplate?: string
 ) => {
   const user = await supabase.auth.getUser();
   if (!user.data.user) throw new Error("User not authenticated");
@@ -23,6 +24,7 @@ export const createResume = async (
       step_config: stepConfig,
       is_current: isCurrent,
       resume_name: resumeName ?? "resume_" + new Date().toISOString(),
+      resume_template: resumeTemplate ?? "default",
     },
   ]);
 
@@ -75,7 +77,8 @@ export const updateResume = async (
   resumeData: any,
   stepConfig: any,
   isCurrent?: boolean,
-  resumeName?: string
+  resumeName?: string,
+  resumeTemplate?: string
 ) => {
   const {
     data: { user },
@@ -105,6 +108,7 @@ export const updateResume = async (
     step_config: stepConfig,
     updated_at: new Date().toISOString(),
     resume_name: resumeName ?? "resume_" + new Date().toISOString(),
+    resume_template: resumeTemplate ?? "default",
   };
 
   if (isCurrent !== undefined) {

@@ -7,6 +7,7 @@ import {
   Button,
   ClickAwayListener,
   Dialog,
+  IconButton,
   Paper,
   Typography,
 } from "@mui/material";
@@ -101,19 +102,20 @@ const Header = () => {
         <ClickAwayListener
           onClickAway={() => isMenuOpen && setIsMenuOpen(false)}
         >
-          <div className="relative mr-2 flex gap-2 md:hidden">
+          <div className="relative flex gap-2 md:hidden">
             <Menu onClick={() => setIsMenuOpen(!isMenuOpen)} />
             {isMenuOpen && (
               <Paper className="absolute z-40 top-6 right-0 flex flex-col gap-1">
                 {getNavbarLinks()}
               </Paper>
             )}
-            <Button
-              variant="contained"
-              className="!text-white !capitalize !min-w-[48px]"
-              startIcon={<Logout />}
+            <IconButton
+              color="primary"
+              className="!p-1 !text-xs !capitalize !border !rounded-sm "
               onClick={() => setIsModalOpen(true)}
-            ></Button>
+            >
+              <Logout className="!w-4 !h-4" />
+            </IconButton>
           </div>
         </ClickAwayListener>
         <div className="items-center justify-center gap-4 mr-2 dark:text-darkText-400 hidden md:flex">

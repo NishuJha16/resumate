@@ -62,6 +62,7 @@ const defaultValues = {
 };
 
 export const LOCAL_STORAGE_KEY = "resumeFormData";
+export const CURRENT_TEMPLATE = "currentResumeTemplate";
 
 const ResumeForm = () => {
   const [activeStep, setActiveStep] = useState("personal");

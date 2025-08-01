@@ -1,11 +1,17 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import ResumePreviewImage from "./ResumePreviewImage";
 import { pdf } from "@react-pdf/renderer";
-import TemplateOne from "./templateOne";
 import PreviewHeader from "./preview-header";
 import { isEqual } from "lodash";
-import { LOCAL_STORAGE_KEY } from "../../pages/resume-form/resume-form";
+import {
+  CURRENT_TEMPLATE,
+  LOCAL_STORAGE_KEY,
+} from "../../pages/resume-form/resume-form";
 import { getResumes, updateResume } from "../../supabase/methods";
+import ModernTemplate from "../templates/modern-template/modern-template";
+import DefaultTemplate from "../templates/default-template/default-template";
+import CompactTemplate from "../templates/compact-template/compact-template";
+import ElegantTemplate from "../templates/elegant-template/elegant-template";
 
 const ResumePreviewParent = ({
   data,
@@ -18,17 +24,31 @@ const ResumePreviewParent = ({
   activeStep?: number;
   loading?: boolean;
 }) => {
+  const [currentTemplate, setCurrentTemplate] = useState<string>("default");
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("resume.pdf");
   const previousData = useRef<any>(null);
+
+  const getTemplate = () => {
+    switch (currentTemplate) {
+      case "modern":
+        return <ModernTemplate data={data} steps={steps} />;
+      case "elegant":
+        return <ElegantTemplate data={data} steps={steps} />;
+      case "default":
+        return <DefaultTemplate data={data} steps={steps} />;
+      case "compact":
+        return <CompactTemplate data={data} steps={steps} />;
+      default:
+        return <DefaultTemplate data={data} steps={steps} />;
+    }
+  };
 
   const generatePdfBlob = async () => {
     try {
       if (!data || Object.keys(data).length === 0) return;
 
-      const blob = await pdf(
-        <TemplateOne data={data} steps={steps} />
-      ).toBlob();
+      const blob = await pdf(getTemplate()).toBlob();
 
       const newUrl = URL.createObjectURL(blob);
       setBlobUrl(newUrl);
@@ -47,7 +67,8 @@ const ResumePreviewParent = ({
           JSON.parse(localData!),
           { steps: steps },
           true,
-          resumeData?.[0]?.resume_name
+          resumeData?.[0]?.resume_name,
+          currentTemplate
         );
       }
     } catch (error) {
@@ -58,16 +79,24 @@ const ResumePreviewParent = ({
   useEffect(() => {
     generatePdfBlob();
     handleUpdateResume();
-  }, [steps]);
+  }, [steps, currentTemplate]);
 
   useEffect(() => {
     const hasDataChanged = !isEqual(previousData.current, data);
     if (!hasDataChanged) return;
-
     previousData.current = data;
     generatePdfBlob();
     handleUpdateResume();
   }, [activeStep, loading]);
+
+  useEffect(() => {
+    const template = localStorage.getItem(CURRENT_TEMPLATE);
+    setCurrentTemplate(template || "default");
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(CURRENT_TEMPLATE, currentTemplate);
+  }, [currentTemplate]);
 
   const handleDownload = () => {
     if (blobUrl) {
@@ -92,6 +121,9 @@ const ResumePreviewParent = ({
         handleDownload={handleDownload}
         handleSync={generatePdfBlob}
         onFileNameChange={setFileName}
+        currentTemplate={currentTemplate}
+        updateCurrentTemplate={(val: string) => setCurrentTemplate(val)}
+        steps={steps}
       />
       {blobUrl && <ResumePreviewImage loading={loading} file={blobUrl} />}
     </Fragment>

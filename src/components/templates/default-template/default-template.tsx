@@ -7,7 +7,7 @@ import {
   ExperiencePreview,
   ProjectsPreview,
   CertificationsPreview,
-} from "./pdf-preview-components";
+} from "./default-template-components";
 import { useMemo } from "react";
 
 const sectionComponents = [
@@ -45,7 +45,7 @@ const sectionComponents = [
   },
 ];
 
-const TemplateOne = ({
+const DefaultTemplate = ({
   steps,
   data,
 }: {
@@ -136,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TemplateOne;
+export default DefaultTemplate;

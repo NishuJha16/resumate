@@ -10,10 +10,13 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { format } from "date-fns";
-import TemplateOne from "../../components/resume-preview/templateOne";
 import { pdf } from "@react-pdf/renderer";
 import { deleteResume, getResumes } from "../../supabase/methods";
 import LoadingIcon from "../../assets/loader.svg";
+import DefaultTemplate from "../../components/templates/default-template/default-template";
+import ModernTemplate from "../../components/templates/modern-template/modern-template";
+import ElegantTemplate from "../../components/templates/elegant-template/elegant-template";
+import CompactTemplate from "../../components/templates/compact-template/compact-template";
 
 const SavedResumes = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -57,10 +60,17 @@ const SavedResumes = () => {
     formData: any;
     id: string;
     steps: number[];
+    resumeTemplate: string;
   } | null>(null);
 
   const [savedResumes, setSavedResumes] = useState<
-    { name: string; formData: any; id: number; steps: number[] }[]
+    {
+      name: string;
+      formData: any;
+      id: number;
+      steps: number[];
+      resumeTemplate: string;
+    }[]
   >([]);
 
   const handleDeletion = (data: any) => {
@@ -81,6 +91,21 @@ const SavedResumes = () => {
     }
   };
 
+  const getTemplate = (resumeTemplate: string, data: any, steps: number[]) => {
+    switch (resumeTemplate) {
+      case "modern":
+        return <ModernTemplate data={data} steps={steps} />;
+      case "elegant":
+        return <ElegantTemplate data={data} steps={steps} />;
+      case "default":
+        return <DefaultTemplate data={data} steps={steps} />;
+      case "compact":
+        return <CompactTemplate data={data} steps={steps} />;
+      default:
+        return <DefaultTemplate data={data} steps={steps} />;
+    }
+  };
+
   const handleClose = () => {
     setSelectedResume(null);
   };
@@ -90,7 +115,7 @@ const SavedResumes = () => {
       if (!data?.formData || Object.keys(data?.formData).length === 0) return;
 
       const blob = await pdf(
-        <TemplateOne data={data?.formData} steps={data?.steps} />
+        getTemplate(data?.resumeTemplate, data?.formData, data?.steps)
       ).toBlob();
 
       const newUrl = URL.createObjectURL(blob);
@@ -117,6 +142,7 @@ const SavedResumes = () => {
         id: resume.id,
         steps: resume.step_config?.steps || [0, 1, 2, 3, 4, 5, 6],
         lastModified: new Date(resume.updated_at),
+        resumeTemplate: resume.resume_template,
       }));
 
       if (response && response.length > 0) {
