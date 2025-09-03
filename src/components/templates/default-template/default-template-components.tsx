@@ -80,13 +80,13 @@ export const PersonalInfoPreview = ({ personal }: { personal: any }) => (
           {personal.github}
         </Link>
       )}
-      {personal?.linkedIn && " | "}
+      {personal?.github && " | "}
       {personal?.linkedIn && (
         <Link style={styles.headerLink} src={personal.linkedIn}>
           {personal.linkedIn}
         </Link>
       )}
-      {personal?.otherUrl && " | "}
+      {personal?.linkedIn && " | "}
       {personal?.otherUrl && (
         <Link style={styles.headerLink} src={personal.otherUrl}>
           {personal.otherUrl}
