@@ -70,8 +70,9 @@ export const PersonalInfoPreview = ({ personal }: { personal: any }) => (
       {personal?.fullName || "Your Name"}
     </Text>
     <Text style={{ fontSize: 9, textAlign: "center", marginVertical: 4 }}>
-      {personal?.email || "youremail@email.com"} |{" "}
-      {personal?.phone || "xxxx234xxx"} | {personal?.place || "Place, Country"}
+      {personal?.email && `${personal?.email} | `}
+      {personal?.phone && `${personal?.phone} | `}
+      {personal?.place}
     </Text>
     <Text style={{ fontSize: 9, textAlign: "center" }}>
       {personal?.github && (
